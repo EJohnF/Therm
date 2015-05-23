@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Therm</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="temperatureFraction">3</string>
+    <string name="temperatureUnit">21</string>
+</resources>

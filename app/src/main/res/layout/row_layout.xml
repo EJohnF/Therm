@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/list_item_shape">
+    <ImageView
+        android:layout_width="@dimen/icon_in_listView"
+        android:layout_height="@dimen/icon_in_listView"
+        android:id="@+id/view_clock"
+        android:background="@drawable/items_clock"
+        android:contentDescription="image of clock in items in main screen"
+        android:layout_gravity="left"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="10dp"
+        android:layout_centerVertical="true">
+    </ImageView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewItem"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:text="00:00-00:00"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/view_clock"
+        android:layout_marginLeft="20dp">
+    </TextView>
+    <ImageView
+        android:layout_width="@dimen/icon_in_listView"
+        android:layout_height="@dimen/icon_in_listView"
+        android:id="@+id/right_view"
+        android:contentDescription="image of moon in items in main screen"
+        android:baselineAlignBottom="false"
+        android:layout_gravity="right"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:layout_centerVertical="true">
+    </ImageView>
+</RelativeLayout>

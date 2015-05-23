@@ -1,0 +1,174 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="330dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/blue"
+        android:id="@+id/BluePartScreen">
+        <ImageButton
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:id="@+id/calendarButton"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/calendar"
+            android:longClickable="false"
+            android:paddingTop="10dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_margin="10dp" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/switchDayNight"
+            android:layout_centerHorizontal="true"
+            android:track="@drawable/track"
+            android:thumb="@drawable/thumb"
+            android:textOff="NIGHT"
+            android:textOn="DAY"
+            android:thumbTextPadding="20dp"
+            android:layout_marginTop="60dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/temperatureUnit"
+            android:textSize="85sp"
+            android:id="@+id/temperUnit"
+            android:layout_below="@+id/switchDayNight"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:layout_alignParentRight="false"
+            android:layout_toLeftOf="@+id/textView" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/temperatureFraction"
+            android:id="@+id/temperFraction"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/textView"
+            android:textSize="65sp"
+            android:layout_alignBottom="@+id/temperUnit"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="7dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="o"
+            android:id="@+id/textO"
+            android:layout_toRightOf="@+id/temperFraction"
+            android:layout_toEndOf="@+id/temperFraction"
+            android:layout_alignTop="@+id/temperUnit"
+            android:singleLine="false"
+            android:textColor="@android:color/white"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="."
+            android:id="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:textSize="60sp"
+            android:textColor="@android:color/white"
+            android:layout_alignBottom="@+id/temperUnit"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="5dp" />
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:id="@+id/imageMinusView"
+            android:background="@drawable/minus"
+            android:layout_alignTop="@+id/temperFraction"
+            android:layout_alignLeft="@+id/calendarButton"
+            android:layout_alignStart="@+id/calendarButton"
+            android:clickable="true"
+            android:onClick="onClickMinus" />
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:id="@+id/imagePlusView"
+            android:background="@drawable/plus"
+            android:layout_alignTop="@+id/temperFraction"
+            android:layout_toRightOf="@+id/textO"
+            android:layout_toEndOf="@+id/textO"
+            android:clickable="true"
+            android:onClick="onClickPlus" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="current  21.3"
+            android:id="@+id/textViewCurrTemp"
+            android:layout_below="@+id/temperUnit"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="30dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/current_t"
+            android:textColor="#ffffffff"
+            android:visibility="visible"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="heating"
+            android:id="@+id/textViewCoolHeat"
+            android:textSize="30dp"
+            android:background="@drawable/current_t"
+            android:textColor="#ffffffff"
+            android:visibility="visible"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/textViewCurrTemp"
+            android:layout_alignLeft="@+id/imageMinusView"
+            android:layout_alignStart="@+id/imageMinusView"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+    </RelativeLayout>
+
+    <!--<ScrollView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:id="@+id/scrollView"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_below="@+id/BluePartScreen"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentTop="false">-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="350dp"-->
+            <!--android:orientation="vertical">-->
+        <ListView
+            android:id="@+id/MainScreeAllDays"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:drawSelectorOnTop="false"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:paddingTop="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/BluePartScreen"
+            android:layout_marginTop="15dp" />
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
+
+
+</RelativeLayout>

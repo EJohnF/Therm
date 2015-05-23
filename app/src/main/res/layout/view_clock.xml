@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@android:dimen/app_icon_size"
+    android:layout_height="@android:dimen/app_icon_size">
+    <!--
+<ImageView
+    android:layout_width="@android:dimen/app_icon_size"
+    android:layout_height="@android:dimen/app_icon_size"
+    android:id="@+id/view_clock"
+    android:background="@drawable/items_clock"
+    android:contentDescription="image of clock in items in main screen">
+</ImageView>
+<ImageView
+    android:layout_width="@android:dimen/app_icon_size"
+    android:layout_height="@android:dimen/app_icon_size"
+    android:id="@+id/view_sun"
+    android:background="@drawable/sun"
+    android:contentDescription="image of sun in items in main screen">
+</ImageView>
+<ImageView
+    android:layout_width="@android:dimen/app_icon_size"
+    android:layout_height="@android:dimen/app_icon_size"
+    android:id="@+id/view_moon"
+    android:background="@drawable/moon"
+    android:contentDescription="image of moon in items in main screen">
+</ImageView> -->
+</RelativeLayout>
