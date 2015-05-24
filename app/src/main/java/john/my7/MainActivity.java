@@ -20,8 +20,8 @@ public class MainActivity extends ActionBarActivity {
     TextView textFract;
     TextView textUnit;
     TextView textCurrTemp;
-    TextView textCoolHeat;
     RelativeLayout blueLay;
+    RelativeLayout topEditLay;
     RelativeLayout.LayoutParams normalParams;
     RelativeLayout.LayoutParams extendParams;
     ListView mainListView;
@@ -36,10 +36,10 @@ public class MainActivity extends ActionBarActivity {
         textCurrTemp = (TextView) findViewById(R.id.textViewCurrTemp);
         textCurrTemp.setVisibility(View.INVISIBLE);
 
-        textCoolHeat = (TextView) findViewById(R.id.textViewCoolHeat);
-        textCoolHeat.setVisibility(View.INVISIBLE);
-
         blueLay = (RelativeLayout) findViewById(R.id.BluePartScreen);
+        blueLay.setVisibility(View.VISIBLE);
+        topEditLay = (RelativeLayout) findViewById(R.id.TopEditLayer);
+        topEditLay.setVisibility(View.INVISIBLE);
         normalParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 500);
         extendParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 660);
         blueLay.setLayoutParams(normalParams);
@@ -92,18 +92,18 @@ public class MainActivity extends ActionBarActivity {
         if (currentTemp.compareTo(goalTemp) == 0) {
             blueLay.setLayoutParams(normalParams);
             textCurrTemp.setVisibility(View.INVISIBLE);
-            textCoolHeat.setVisibility(View.INVISIBLE);
         }
         else {
-            blueLay.setLayoutParams(extendParams);
+         //   blueLay.setLayoutParams(extendParams);
             textCurrTemp.setVisibility(View.VISIBLE);
-            textCoolHeat.setVisibility(View.VISIBLE);
-            if (currentTemp.compareTo(goalTemp) < 0) {
-                textCoolHeat.setText(heating);
-            }
-            else{
-                textCoolHeat.setText(cooling);
-            }
         }
+    }
+    public void onClickCalendar(View v){
+        blueLay.setVisibility(View.INVISIBLE);
+        topEditLay.setVisibility(View.VISIBLE);
+    }
+    public void onClickOk(View v){
+        blueLay.setVisibility(View.VISIBLE);
+        topEditLay.setVisibility(View.INVISIBLE);
     }
 }
