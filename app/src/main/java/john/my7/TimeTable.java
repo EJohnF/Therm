@@ -5,18 +5,36 @@ package john.my7;
  */
 public class TimeTable {
     Day[] days;
+    private Temperature day;
+    private Temperature night;
     public static final String[] dayName
             = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+
+    public Temperature getDay() {
+        return day;
+    }
+
+    public void setDay(Temperature day) {
+        this.day = day;
+    }
+
+    public Temperature getNight() {
+        return night;
+    }
+
+    public void setNight(Temperature night) {
+        this.night = night;
+    }
 
     public class Day {
         public String name;
         public int number;
-        Time[] intervals;
+        TimeInterval[] intervals;
         int settedIntervals;
 
         public Day(String s) {
             name = s;
-            intervals = new Time[10];
+            intervals = new TimeInterval[10];
             settedIntervals = 0;
         }
 
@@ -25,7 +43,7 @@ public class TimeTable {
             this.number = number;
         }
 
-        public void addInterval(Time interval) {
+        public void addInterval(TimeInterval interval) {
             intervals[settedIntervals] = interval;
             settedIntervals++;
         }
@@ -56,25 +74,25 @@ public class TimeTable {
         for (int i = 0; i < 7; i++) {
             days[i] = new Day(dayName[i],i);
         }
-        days[0].addInterval(new Time(0, 0, 6, 0));
-        days[0].addInterval(new Time(6, 0, 8, 0));
-        days[0].addInterval(new Time(8, 0, 12, 15));
-        days[0].addInterval(new Time(12, 15, 13, 15));
+        days[0].addInterval(new TimeInterval(0, 0, 6, 0));
+        days[0].addInterval(new TimeInterval(6, 0, 8, 0));
+        days[0].addInterval(new TimeInterval(8, 0, 12, 15));
+        days[0].addInterval(new TimeInterval(12, 15, 13, 15));
 
-        days[1].addInterval(new Time(0, 0, 6, 0));
-        days[1].addInterval(new Time(6, 0, 8, 0));
-        days[1].addInterval(new Time(8, 0, 12, 15));
-        days[1].addInterval(new Time(12, 15, 13, 15));
+        days[1].addInterval(new TimeInterval(0, 0, 6, 0));
+        days[1].addInterval(new TimeInterval(6, 0, 8, 0));
+        days[1].addInterval(new TimeInterval(8, 0, 12, 15));
+        days[1].addInterval(new TimeInterval(12, 15, 13, 15));
 
-        days[2].addInterval(new Time(0, 0, 6, 0));
-        days[2].addInterval(new Time(6, 0, 8, 0));
-        days[2].addInterval(new Time(8, 0, 12, 15));
-        days[2].addInterval(new Time(12, 15, 13, 15));
+        days[2].addInterval(new TimeInterval(0, 0, 6, 0));
+        days[2].addInterval(new TimeInterval(6, 0, 8, 0));
+        days[2].addInterval(new TimeInterval(8, 0, 12, 15));
+        days[2].addInterval(new TimeInterval(12, 15, 13, 15));
 
-        days[3].addInterval(new Time(0, 0, 6, 0));
+        days[3].addInterval(new TimeInterval(0, 0, 6, 0));
 
-        days[4].addInterval(new Time(0, 0, 6, 0));
-        days[4].addInterval(new Time(6, 0, 10, 0));
+        days[4].addInterval(new TimeInterval(0, 0, 6, 0));
+        days[4].addInterval(new TimeInterval(6, 0, 10, 0));
     }
 
     public Day getDay(int position) {

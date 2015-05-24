@@ -1,23 +1,36 @@
 package john.my7;
 
 /**
- * Created by John on 17.05.2015.
+ * Created by John on 25.05.2015.
  */
 public class Time {
-    int startHour;
-    int startMinute;
-    int endHour;
-    int endMinute;
-    public Time(int startHour, int startMinute, int endHour, int endMinute){
-        this.startHour = startHour;
-        this.startMinute = startMinute;
-        this.endHour = endHour;
-        this.endMinute = endMinute;
+    private int hour;
+    private int minute;
+
+    public Time(int hour, int minute){
+        this.hour = hour;
+        this.minute = minute;
     }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
     @Override
     public String toString() {
-        return intToString(startHour)+":" + intToString(startMinute)
-                +" - " + intToString(endHour)+":"+intToString(endMinute);
+        return intToString(hour)+":"+intToString(minute);
     }
     private String intToString(int i){
         if (i>=10){

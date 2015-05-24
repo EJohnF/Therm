@@ -25,6 +25,7 @@ public class MainActivity extends ActionBarActivity {
     RelativeLayout.LayoutParams normalParams;
     RelativeLayout.LayoutParams extendParams;
     ListView mainListView;
+    TimeTable schedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,11 @@ public class MainActivity extends ActionBarActivity {
         blueLay.setLayoutParams(normalParams);
         mainListView = (ListView) findViewById(R.id.MainScreeAllDays);
 
-        MainMenuAllTimeSet adapter2 = new MainMenuAllTimeSet(this, new TimeTable());
+        schedule = new TimeTable();
+        schedule.setDay(new Temperature(24,5));
+        schedule.setNight(new Temperature(20,0));
+
+        MainMenuAllTimeSet adapter2 = new MainMenuAllTimeSet(this, schedule);
         mainListView.setAdapter(adapter2);
 
         currentTemp = new Temperature(21,3);
@@ -105,5 +110,8 @@ public class MainActivity extends ActionBarActivity {
     public void onClickOk(View v){
         blueLay.setVisibility(View.VISIBLE);
         topEditLay.setVisibility(View.INVISIBLE);
+    }
+    public void onClickMinusNightTemp(View v){
+
     }
 }
