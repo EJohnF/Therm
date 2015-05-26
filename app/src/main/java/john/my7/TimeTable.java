@@ -84,6 +84,10 @@ public class TimeTable {
             }
             return day;
         }
+
+        public TimeInterval getTimeInterval(int position){
+            return intervals[position];
+        }
     }
 
     public TimeTable() {

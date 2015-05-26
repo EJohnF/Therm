@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -30,6 +31,13 @@ public class MainActivity extends ActionBarActivity {
     TextView textEditNightTemp;
     TextView textEditDayTemp;
 
+    RelativeLayout editTimeIntervalLayout;
+
+    TextView textViewEditStartTime;
+    TextView textViewEditEndTime;
+
+    TimePicker timePicker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +52,10 @@ public class MainActivity extends ActionBarActivity {
         blueLay.setVisibility(View.VISIBLE);
         topEditLay = (RelativeLayout) findViewById(R.id.TopEditLayer);
         topEditLay.setVisibility(View.INVISIBLE);
+        editTimeIntervalLayout = (RelativeLayout) findViewById(R.id.editTimeIntervalLayout);
+        editTimeIntervalLayout.setVisibility(View.INVISIBLE);
+        textViewEditEndTime = (TextView)findViewById(R.id.textViewEditEndTime);
+        textViewEditStartTime = (TextView)findViewById(R.id.textViewEditStartTime);
     //    normalParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 500);
    //     extendParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 660);
    //     blueLay.setLayoutParams(normalParams);
@@ -154,4 +166,40 @@ public class MainActivity extends ActionBarActivity {
         textUnit.setText(goalTemp.getUnitString());
         checkForChangeBlueSize();
     }
+
+    public void onClickEditTimeInterval(View v){
+        editTimeIntervalLayout.setVisibility(View.VISIBLE);
+        textViewEditStartTime.setText(World.selected_time_interval.start.toString());
+        textViewEditEndTime.setText(World.selected_time_interval.end.toString());
+        mainListView.setEnabled(false);
+        topEditLay.setEnabled(false);
+        onClickGeneral(v);
+    }
+    public void onClickEditTimeIntervalSave(View v){
+        editTimeIntervalLayout.setVisibility(View.INVISIBLE);
+        mainListView.setEnabled(true);
+        topEditLay.setEnabled(true);
+        onClickGeneral(v);
+    }
+    public void onClickEditTimeIntervalCancel(View v){
+        editTimeIntervalLayout.setVisibility(View.INVISIBLE);
+        mainListView.setEnabled(true);
+        topEditLay.setEnabled(true);
+        onClickGeneral(v);
+    }
+
+    public void onClickEditTimeIntervalStart(View v){
+        timePicker.setVisibility(View.VISIBLE);
+        //TODO: тут проблема с появление TimePicker. Если расскоментить то прога просто падает.
+//        DialogFragment newFragment = new TimePickerFragment();
+//        newFragment.show(getSupportFragmentManager(), "Set start time");
+
+    }
+    public void onClickEditTimeIntervalEnd(View v){
+        timePicker.setVisibility(View.VISIBLE);
+//        DialogFragment newFragment = new TimePickerFragment();
+//        newFragment.show(getSupportFragmentManager(), "Set end time");
+
+    }
+
 }

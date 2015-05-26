@@ -25,4 +25,5 @@ public class TimeInterval {
         }
         else return false;
     }
+
 }

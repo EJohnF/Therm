@@ -47,7 +47,7 @@ public class MainMenuOneTimesSet extends BaseAdapter {
         final View rowView = inflater.inflate(R.layout.row_layout, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.textViewItem);
         ImageView rightView = (ImageView) rowView.findViewById(R.id.right_view);
-
+        final TimeInterval timeInterval = day.getTimeInterval(position);
 //        final View images = inflater.inflate(R.layout.activity_main, parent, false);
 //        final ImageButton edit = (ImageButton) images.findViewById(R.id.imageButtonEdit);
 //        final ImageButton delete = (ImageButton) images.findViewById(R.id.imageButtonDelete);
@@ -74,6 +74,7 @@ public class MainMenuOneTimesSet extends BaseAdapter {
                     World.deleteImageButton.setTop(locat[1] - height);
                     World.deleteImageButton.setRight(locat[0] + width * 2 + padding);
                     World.deleteImageButton.setVisibility(View.VISIBLE);
+                    World.selected_time_interval = timeInterval;
                 }
             }
         });

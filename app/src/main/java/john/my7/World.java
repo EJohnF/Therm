@@ -11,6 +11,7 @@ public class World {
     //NOW 1min in app = 1 sec in real
     public static Time CURRENT_TIME = new Time(0,0);
     public static Temperature CURRENT_TEMPERATURE = new Temperature(23,5);
+    public static TimeInterval selected_time_interval;
     public static boolean IS_EDIT_MODE = false;
     public static void startTime(){
         Thread ticker = new Thread(new Runnable() {
