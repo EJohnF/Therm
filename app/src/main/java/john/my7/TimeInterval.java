@@ -18,4 +18,11 @@ public class TimeInterval {
     public String toString() {
         return start.toString()+" - " + end.toString();
     }
+
+    public boolean isInInterval(Time currentTime) {
+        if (currentTime.compareTo(end) <= 0 && currentTime.compareTo(start) >= 0){
+            return true;
+        }
+        else return false;
+    }
 }

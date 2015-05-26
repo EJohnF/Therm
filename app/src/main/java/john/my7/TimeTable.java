@@ -3,6 +3,11 @@ package john.my7;
 /**
  * Created by John on 20.05.2015.
  */
+
+/*
+ ќ„≈Ќ№ ¬ј∆Ќќ!!!
+ сейчас в реализации заложено то, что первый интервал времени - всегда ночь, и далее они чередуютс€ с днЄм
+ */
 public class TimeTable {
     Day[] days;
     private Temperature day;
@@ -10,19 +15,19 @@ public class TimeTable {
     public static final String[] dayName
             = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
-    public Temperature getDay() {
+    public Temperature getDayTemp() {
         return day;
     }
 
-    public void setDay(Temperature day) {
+    public void setDayTemp(Temperature day) {
         this.day = day;
     }
 
-    public Temperature getNight() {
+    public Temperature getNightTemp() {
         return night;
     }
 
-    public void setNight(Temperature night) {
+    public void setNightTemp(Temperature night) {
         this.night = night;
     }
 
@@ -67,6 +72,18 @@ public class TimeTable {
         public int getNumber(){
             return number;
         }
+        public Temperature getCurrentTemp(){
+            for (int i = 0; i < settedIntervals; i++) {
+                if (intervals[i].isInInterval(World.CURRENT_TIME)){
+                    // TODO: re-implement here, for correctly work when the first temperature is not night
+                    if (i % 2 == 0){
+                        return day;
+                    }
+                    else return night;
+                }
+            }
+            return day;
+        }
     }
 
     public TimeTable() {
@@ -97,6 +114,10 @@ public class TimeTable {
 
     public Day getDay(int position) {
         return days[position];
+    }
+
+    public Temperature getCurrentGoal(){
+        return days[World.CURRENT_DAY].getCurrentTemp();
     }
 }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,7 +33,7 @@ public class MainMenuAllTimeSet extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return lists[(position+World.CURRENT_DAY)%7];
     }
 
     @Override
@@ -44,9 +45,10 @@ public class MainMenuAllTimeSet extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.row_of_list, parent, false);
+        final View rowView = inflater.inflate(R.layout.row_of_list, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.textViewDayOfWeek);
         ListView listView = (ListView) rowView.findViewById(R.id.DataListViewer);
+
         int cur = (position+World.CURRENT_DAY)%7;
         ViewGroup.LayoutParams lp = listView.getLayoutParams();
         lp.height = 80*timeTable.getDay(cur).getNumberIntervals();
@@ -54,6 +56,12 @@ public class MainMenuAllTimeSet extends BaseAdapter {
 //        ListView.LayoutParams normalParams = new ListView.LayoutParams(parent.getWidth(), 60*timeTable.getDay(cur).getNumberIntervals());
 //        listView.setLayoutParams(normalParams);
         listView.setAdapter(lists[cur]);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
         String s = "";
         if (position ==0){
             s+="Today:";
@@ -62,4 +70,5 @@ public class MainMenuAllTimeSet extends BaseAdapter {
         textView.setText(s);
         return rowView;
     }
+
 }

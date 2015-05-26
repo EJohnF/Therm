@@ -94,10 +94,10 @@
             android:id="@+id/imageMinusView"
             android:background="@drawable/minus"
             android:layout_alignTop="@+id/temperFraction"
-            android:layout_alignLeft="@+id/calendarButton"
-            android:layout_alignStart="@+id/calendarButton"
             android:clickable="true"
-            android:onClick="onClickMinus"/>
+            android:onClick="onClickMinus"
+            android:layout_toLeftOf="@+id/temperUnit"
+            android:layout_marginRight="10dp" />
         <ImageView
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
@@ -107,7 +107,8 @@
             android:onClick="onClickPlus"
             android:layout_alignTop="@+id/temperFraction"
             android:layout_toRightOf="@+id/textViewCurrTemp"
-            android:layout_toEndOf="@+id/textViewCurrTemp" />
+            android:layout_toEndOf="@+id/textViewCurrTemp"
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -119,7 +120,8 @@
             android:textColor="#ffffffff"
             android:visibility="visible"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="0dp" />
 
     </RelativeLayout>
     <RelativeLayout
@@ -172,14 +174,15 @@
                     android:layout_column="1"
                     android:background="@drawable/minus_pic"
                     android:layout_marginLeft="35dp"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:onClick="onClickMinusNightTemp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="20.2"
-                    android:id="@+id/textView3"
+                    android:id="@+id/textViewEditNightTemp"
                     android:layout_column="2"
                     android:layout_gravity="center"
                     android:singleLine="true"
@@ -192,7 +195,8 @@
                     android:layout_height="@dimen/in_edit_minus_plus_size"
                     android:id="@+id/imageView5"
                     android:background="@drawable/plus_pic"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:onClick="onClickPlusNightTemp" />
             </TableRow>
 
             <TableRow
@@ -215,14 +219,15 @@
                     android:layout_column="1"
                     android:background="@drawable/minus_pic"
                     android:layout_marginLeft="35dp"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:onClick="onClickMinusDayTemp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="24.6"
-                    android:id="@+id/textView4"
+                    android:id="@+id/textViewEditDayTemp"
                     android:layout_column="2"
                     android:layout_gravity="center"
                     android:singleLine="true"
@@ -235,7 +240,9 @@
                     android:layout_height="@dimen/in_edit_minus_plus_size"
                     android:id="@+id/imageView4"
                     android:background="@drawable/plus_pic"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:onClick="onClickPlusDayTemp"
+                    android:longClickable="false" />
 
             </TableRow>
 
@@ -266,7 +273,27 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/BluePartScreen"
             android:layout_marginTop="15dp"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:scrollingCache="true"
+            android:choiceMode="singleChoice"
+            android:clickable="true" />
+    <ImageButton
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:id="@+id/imageButtonEdit"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/edit"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:id="@+id/imageButtonDelete"
+        android:layout_alignBottom="@+id/imageButtonEdit"
+        android:layout_toRightOf="@+id/imageButtonEdit"
+        android:layout_toEndOf="@+id/imageButtonEdit"
+        android:background="@drawable/delete"
+        android:visibility="invisible" />
         <!--</LinearLayout>-->
     <!--</ScrollView>-->
 
