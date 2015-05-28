@@ -13,6 +13,8 @@ public class World {
     public static Temperature CURRENT_TEMPERATURE = new Temperature(23,5);
     public static TimeInterval selected_time_interval;
     public static boolean IS_EDIT_MODE = false;
+    public static TimeTable.Day SELECTED_DAY;
+    public static MainActivity mainActivity;
     public static void startTime(){
         Thread ticker = new Thread(new Runnable() {
             @Override

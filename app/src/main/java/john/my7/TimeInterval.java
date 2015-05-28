@@ -14,6 +14,10 @@ public class TimeInterval {
         this.start = start;
         this.end = end;
     }
+    public TimeInterval(){
+        this.start = new Time(0,0);
+        this.end = new Time(0,0);
+    }
     @Override
     public String toString() {
         return start.toString()+" - " + end.toString();
@@ -35,5 +39,12 @@ public class TimeInterval {
         start.setMinute(interval.start.getMinute());
         end.setHour(interval.end.getHour());
         end.setMinute(interval.end.getMinute());
+    }
+
+    public boolean isEmpty() {
+        if (start.getHour() == 0 && start.getMinute() == 0 && end.getHour() == 0 && end.getMinute() == 0){
+            return true;
+        }
+        return false;
     }
 }

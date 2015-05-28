@@ -14,13 +14,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.eftimoff.androidplayer.Player;
 import com.eftimoff.androidplayer.actions.property.PropertyAction;
 
 /*
-TODO: нужен нормальный способ установки целевой температы. Сейчас он основывается на методе onClickGeneral() что вообще  говоря тупо
+TODO: пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ onClickGeneral() пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
  */
 public class MainActivity extends ActionBarActivity {
     Temperature currentTemp;
@@ -28,10 +29,13 @@ public class MainActivity extends ActionBarActivity {
     TextView textFract;
     TextView textUnit;
     TextView textCurrTemp;
+    TextView textPoint;
+    TextView textZero;
     RelativeLayout blueLay;
     RelativeLayout topEditLay;
     ListView mainListView;
     TimeTable schedule;
+    Switch switcher;
 
     TextView textEditNightTemp;
     TextView textEditDayTemp;
@@ -45,6 +49,9 @@ public class MainActivity extends ActionBarActivity {
 
     ImageButton bigPlus;
     ImageButton bigMinus;
+    ImageButton calendarButton;
+
+    boolean wasPaused;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +62,9 @@ public class MainActivity extends ActionBarActivity {
 
         World.startTime();
         onClickGeneral();
+        wasPaused = true;
         createAnimation();
+        World.mainActivity = this;
     }
 
     private void setInitialSettings() {
@@ -80,6 +89,8 @@ public class MainActivity extends ActionBarActivity {
     private void initializeFields() {
         textFract = (TextView) findViewById(R.id.temperFraction);
         textUnit = (TextView) findViewById(R.id.temperUnit);
+        textPoint = (TextView) findViewById(R.id.textPoint);
+        textZero = (TextView) findViewById(R.id.textO);
         textCurrTemp = (TextView) findViewById(R.id.textViewCurrTemp);
         blueLay = (RelativeLayout) findViewById(R.id.BluePartScreen);
         topEditLay = (RelativeLayout) findViewById(R.id.TopEditLayer);
@@ -92,34 +103,123 @@ public class MainActivity extends ActionBarActivity {
         World.editImageButton = (ImageButton)findViewById(R.id.imageButtonEdit);
         World.deleteImageButton = (ImageButton)findViewById(R.id.imageButtonDelete);
         textEditDayTemp = (TextView)findViewById(R.id.textViewEditDayTemp);
+        switcher = (Switch) findViewById(R.id.switchDayNight);
+        calendarButton = (ImageButton)findViewById(R.id.calendarButton);
+        bigPlus = (ImageButton)findViewById(R.id.imagePlusView);
+        bigMinus = (ImageButton)findViewById(R.id.imageMinusView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        createAnimation();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        wasPaused = true;
     }
 
     private void createAnimation() {
-        final PropertyAction fabAction = PropertyAction.newPropertyAction(textUnit).
-                scaleX(0).
-                scaleY(0).
-                duration(400).
-                interpolator(new AccelerateDecelerateInterpolator()).
-                build();
-        final PropertyAction headerAction = PropertyAction.newPropertyAction(blueLay).
-                interpolator(new DecelerateInterpolator()).
-                translationY(-200).
-                duration(300).
-                alpha(0.4f).
-                build();
-        final PropertyAction bottomAction = PropertyAction.newPropertyAction(mainListView).
-                translationY(500).
-                duration(450).
-                alpha(0f).
-                build();
+        if (wasPaused) {
+            wasPaused = false;
 
-        Player.init().
-                animate(headerAction).
-                then().
-                animate(fabAction).
-                then().
-                animate(bottomAction).
-                play();
+            final PropertyAction unit = PropertyAction.newPropertyAction(textUnit).
+                    scaleX(0).
+                    scaleY(0).
+                    duration(50).
+                    interpolator(new AccelerateDecelerateInterpolator()).
+                    build();
+            final PropertyAction point = PropertyAction.newPropertyAction(textPoint).
+                    scaleX(0).
+                    scaleY(0).
+                    duration(10).
+                    interpolator(new AccelerateDecelerateInterpolator()).
+                    build();
+            final PropertyAction zero = PropertyAction.newPropertyAction(textZero).
+                    scaleX(0).
+                    scaleY(0).
+                    duration(20).
+                    interpolator(new AccelerateDecelerateInterpolator()).
+                    build();
+            final PropertyAction fraction = PropertyAction.newPropertyAction(textFract).
+                    scaleX(0).
+                    scaleY(0).
+                    duration(40).
+                    interpolator(new AccelerateDecelerateInterpolator()).
+                    build();
+            final PropertyAction minus = PropertyAction.newPropertyAction(bigMinus).
+                    scaleX(0).
+                    scaleY(0).
+                    duration(50).
+                    interpolator(new AccelerateDecelerateInterpolator()).
+                    build();
+            final PropertyAction plus = PropertyAction.newPropertyAction(bigPlus).
+                    scaleX(0).
+                    scaleY(0).
+                    duration(50).
+                    interpolator(new AccelerateDecelerateInterpolator()).
+                    build();
+            final PropertyAction current = PropertyAction.newPropertyAction(textCurrTemp).
+                    scaleX(0).
+                    scaleY(0).
+                    duration(35).
+                    interpolator(new AccelerateDecelerateInterpolator()).
+                    build();
+            final PropertyAction swit = PropertyAction.newPropertyAction(switcher).
+                    scaleX(0).
+                    scaleY(0).
+                    duration(50).
+                    interpolator(new AccelerateDecelerateInterpolator()).
+                    build();
+            final PropertyAction calendar = PropertyAction.newPropertyAction(calendarButton).
+                    scaleX(0).
+                    scaleY(0).
+                    duration(400).
+                    interpolator(new AccelerateDecelerateInterpolator()).
+                    build();
+            final PropertyAction headerAction = PropertyAction.newPropertyAction(blueLay).
+                    interpolator(new DecelerateInterpolator()).
+                    translationY(-200).
+                    duration(100).
+                    alpha(0.4f).
+                    build();
+            final PropertyAction bottomAction = PropertyAction.newPropertyAction(mainListView).
+                    translationY(500).
+                    duration(200).
+                    alpha(0f).
+                    build();
+
+            Player.init().
+                    animate(headerAction).
+                    then().
+                    animate(minus).
+                    then().
+                    animate(unit).
+                    then().
+                    animate(point).
+                    then().
+                    animate(fraction).
+                    then().
+                    animate(zero).
+                    then().
+                    animate(plus).
+                    then().
+                    animate(current).
+                    then().
+                    animate(swit).
+                    then().
+                    animate(bottomAction).
+                    then().
+                    animate(calendar).
+                    play();
+        }
     }
 
 
@@ -173,11 +273,15 @@ public class MainActivity extends ActionBarActivity {
         blueLay.setVisibility(View.INVISIBLE);
         topEditLay.setVisibility(View.VISIBLE);
         World.IS_EDIT_MODE = true;
+        ((MainMenuAllTimeSet)mainListView.getAdapter()).enterToEditMode();
+        ((BaseAdapter)mainListView.getAdapter()).notifyDataSetChanged();
     }
     public void onClickOk(View v){
         blueLay.setVisibility(View.VISIBLE);
         topEditLay.setVisibility(View.INVISIBLE);
         World.IS_EDIT_MODE = false;
+        ((MainMenuAllTimeSet)mainListView.getAdapter()).outFromEditMode();
+        ((BaseAdapter)mainListView.getAdapter()).notifyDataSetChanged();
         onClickGeneral();
     }
     public void onClickMinusNightTemp(View v){
@@ -223,9 +327,13 @@ public class MainActivity extends ActionBarActivity {
         editTimeIntervalLayout.setVisibility(View.INVISIBLE);
         mainListView.setEnabled(true);
         topEditLay.setEnabled(true);
-        //TODO сделать перестройку плана в зависимости от внесённых изменений
-        ((BaseAdapter)mainListView.getAdapter()).notifyDataSetChanged();
         onClickGeneral();
+        System.out.println(helpful.toString());
+        if (helpful.isEmpty()){ // СЌС‚Рѕ Р·РЅР°С‡РёС‚ С‡С‚Рѕ Р±С‹Р»Р° РЅР°Р¶Р°С‚Р° "РґРѕР±Р°РІРёС‚СЊ РёРЅС‚РµСЂРІР°Р»"
+            System.out.println(World.SELECTED_DAY.toString());
+            World.SELECTED_DAY.addInterval(World.selected_time_interval);
+        }
+        ((BaseAdapter)mainListView.getAdapter()).notifyDataSetChanged();
     }
     public void onClickEditTimeIntervalCancel(View v){
 
