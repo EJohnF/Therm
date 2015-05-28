@@ -26,4 +26,14 @@ public class TimeInterval {
         else return false;
     }
 
+    public TimeInterval copy() {
+        return new TimeInterval(start.getHour(),start.getMinute(),end.getHour(),end.getMinute());
+    }
+
+    public void setFrom(TimeInterval interval) {
+        start.setHour(interval.start.getHour());
+        start.setMinute(interval.start.getMinute());
+        end.setHour(interval.end.getHour());
+        end.setMinute(interval.end.getMinute());
+    }
 }

@@ -1,21 +1,23 @@
 package john.my7;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
-
+/*
+TODO: нужен нормальный способ установки целевой температы. —ейчас он основываетс€ на методе onClickGeneral() что вообще  говор€ тупо
+ */
 public class MainActivity extends ActionBarActivity {
-
-    public static final String heating = "heating";
-    public static final String cooling = "cooling";
     Temperature currentTemp;
     Temperature goalTemp;
     TextView textFract;
@@ -23,8 +25,6 @@ public class MainActivity extends ActionBarActivity {
     TextView textCurrTemp;
     RelativeLayout blueLay;
     RelativeLayout topEditLay;
-    RelativeLayout.LayoutParams normalParams;
-    RelativeLayout.LayoutParams extendParams;
     ListView mainListView;
     TimeTable schedule;
 
@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
     TextView textViewEditStartTime;
     TextView textViewEditEndTime;
 
-    TimePicker timePicker;
+    TimeInterval helpful;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +56,6 @@ public class MainActivity extends ActionBarActivity {
         editTimeIntervalLayout.setVisibility(View.INVISIBLE);
         textViewEditEndTime = (TextView)findViewById(R.id.textViewEditEndTime);
         textViewEditStartTime = (TextView)findViewById(R.id.textViewEditStartTime);
-    //    normalParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 500);
-   //     extendParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 660);
-   //     blueLay.setLayoutParams(normalParams);
         mainListView = (ListView) findViewById(R.id.MainScreeAllDays);
 
         schedule = new TimeTable();
@@ -76,6 +73,7 @@ public class MainActivity extends ActionBarActivity {
         World.editImageButton = (ImageButton)findViewById(R.id.imageButtonEdit);
         World.deleteImageButton = (ImageButton)findViewById(R.id.imageButtonDelete);
         World.startTime();
+        onClickGeneral();
     }
 
 
@@ -135,30 +133,30 @@ public class MainActivity extends ActionBarActivity {
         blueLay.setVisibility(View.VISIBLE);
         topEditLay.setVisibility(View.INVISIBLE);
         World.IS_EDIT_MODE = false;
-        onClickGeneral(v);
+        onClickGeneral();
     }
     public void onClickMinusNightTemp(View v){
         schedule.getNightTemp().decremenTenth();
         textEditNightTemp.setText(schedule.getNightTemp().toString());
-        onClickGeneral(v);
+        onClickGeneral();
     }
     public void onClickMinusDayTemp(View v){
         schedule.getDayTemp().decremenTenth();
         textEditDayTemp.setText(schedule.getDayTemp().toString());
-        onClickGeneral(v);
+        onClickGeneral();
     }
     public void onClickPlusDayTemp(View v){
         schedule.getDayTemp().incremenTenth();
         textEditDayTemp.setText(schedule.getDayTemp().toString());
-        onClickGeneral(v);
+        onClickGeneral();
     }
     public void onClickPlusNightTemp(View v){
         schedule.getNightTemp().incremenTenth();
         textEditNightTemp.setText(schedule.getNightTemp().toString());
-        onClickGeneral(v);
+        onClickGeneral();
     }
 
-    private void onClickGeneral(View v){
+    private void onClickGeneral(){
         World.deleteImageButton.setVisibility(View.INVISIBLE);
         World.editImageButton.setVisibility(View.INVISIBLE);
         goalTemp = schedule.getCurrentGoal();
@@ -171,35 +169,49 @@ public class MainActivity extends ActionBarActivity {
         editTimeIntervalLayout.setVisibility(View.VISIBLE);
         textViewEditStartTime.setText(World.selected_time_interval.start.toString());
         textViewEditEndTime.setText(World.selected_time_interval.end.toString());
+        helpful = World.selected_time_interval.copy();
         mainListView.setEnabled(false);
         topEditLay.setEnabled(false);
-        onClickGeneral(v);
+        onClickGeneral();
     }
     public void onClickEditTimeIntervalSave(View v){
         editTimeIntervalLayout.setVisibility(View.INVISIBLE);
         mainListView.setEnabled(true);
         topEditLay.setEnabled(true);
-        onClickGeneral(v);
+        //TODO сделать перестройку плана в зависимости от внесЄнных изменений
+        ((BaseAdapter)mainListView.getAdapter()).notifyDataSetChanged();
+        onClickGeneral();
     }
     public void onClickEditTimeIntervalCancel(View v){
-        editTimeIntervalLayout.setVisibility(View.INVISIBLE);
+
         mainListView.setEnabled(true);
         topEditLay.setEnabled(true);
-        onClickGeneral(v);
+        onClickGeneral();
+        World.selected_time_interval.setFrom(helpful);
+
+
+        ValueAnimator animator = ObjectAnimator.ofFloat(editTimeIntervalLayout, "alpha", 1f, 0f);
+        animator.setDuration(1000);
+        animator.start();
+
     }
 
     public void onClickEditTimeIntervalStart(View v){
-        timePicker.setVisibility(View.VISIBLE);
-        //TODO: тут проблема с по€вление TimePicker. ≈сли расскоментить то прога просто падает.
-//        DialogFragment newFragment = new TimePickerFragment();
-//        newFragment.show(getSupportFragmentManager(), "Set start time");
+        DialogFragment newFragment = new TimePickerFragment();
+        ((TimePickerFragment)newFragment).setTime(World.selected_time_interval.start);
+        ((TimePickerFragment)newFragment).setActivity(this);
+        newFragment.setCancelable(true);
+        newFragment.show(getSupportFragmentManager(), "Set start time");
 
     }
     public void onClickEditTimeIntervalEnd(View v){
-        timePicker.setVisibility(View.VISIBLE);
-//        DialogFragment newFragment = new TimePickerFragment();
-//        newFragment.show(getSupportFragmentManager(), "Set end time");
-
+        DialogFragment newFragment = new TimePickerFragment();
+        ((TimePickerFragment)newFragment).setTime(World.selected_time_interval.end);
+        ((TimePickerFragment)newFragment).setActivity(this);
+        newFragment.setCancelable(true);
+        newFragment.show(getSupportFragmentManager(), "Set end time");
+        textViewEditStartTime.setText(World.selected_time_interval.start.toString());
+        textViewEditEndTime.setText(World.selected_time_interval.end.toString());
     }
 
 }
