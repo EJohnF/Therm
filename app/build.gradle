@@ -21,5 +21,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.eftimoff:androidplayer:1.0.2@aar'
     compile 'com.android.support:appcompat-v7:22.1.1'
 }

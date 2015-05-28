@@ -88,7 +88,7 @@
             android:layout_marginBottom="4dp"
             android:layout_marginRight="5dp" />
 
-        <ImageView
+        <ImageButton
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
             android:id="@+id/imageMinusView"
@@ -98,7 +98,7 @@
             android:onClick="onClickMinus"
             android:layout_toLeftOf="@+id/temperUnit"
             android:layout_marginRight="10dp" />
-        <ImageView
+        <ImageButton
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
             android:id="@+id/imagePlusView"

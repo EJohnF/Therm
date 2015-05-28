@@ -8,11 +8,16 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.eftimoff.androidplayer.Player;
+import com.eftimoff.androidplayer.actions.property.PropertyAction;
 
 /*
 TODO: нужен нормальный способ установки целевой температы. Сейчас он основывается на методе onClickGeneral() что вообще  говоря тупо
@@ -38,25 +43,26 @@ public class MainActivity extends ActionBarActivity {
 
     TimeInterval helpful;
 
+    ImageButton bigPlus;
+    ImageButton bigMinus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textFract = (TextView) findViewById(R.id.temperFraction);
-        textUnit = (TextView) findViewById(R.id.temperUnit);
+        initializeFields();
+        setInitialSettings();
 
-        textCurrTemp = (TextView) findViewById(R.id.textViewCurrTemp);
-        textCurrTemp.setVisibility(View.INVISIBLE);
+        World.startTime();
+        onClickGeneral();
+        createAnimation();
+    }
 
-        blueLay = (RelativeLayout) findViewById(R.id.BluePartScreen);
+    private void setInitialSettings() {
+
         blueLay.setVisibility(View.VISIBLE);
-        topEditLay = (RelativeLayout) findViewById(R.id.TopEditLayer);
         topEditLay.setVisibility(View.INVISIBLE);
-        editTimeIntervalLayout = (RelativeLayout) findViewById(R.id.editTimeIntervalLayout);
         editTimeIntervalLayout.setVisibility(View.INVISIBLE);
-        textViewEditEndTime = (TextView)findViewById(R.id.textViewEditEndTime);
-        textViewEditStartTime = (TextView)findViewById(R.id.textViewEditStartTime);
-        mainListView = (ListView) findViewById(R.id.MainScreeAllDays);
 
         schedule = new TimeTable();
         schedule.setDayTemp(new Temperature(24, 5));
@@ -66,16 +72,55 @@ public class MainActivity extends ActionBarActivity {
         mainListView.setAdapter(adapter2);
         currentTemp = new Temperature(21,3);
         goalTemp = new Temperature(21,3);
-        textEditNightTemp = (TextView)findViewById(R.id.textViewEditNightTemp);
+
         textEditNightTemp.setText(schedule.getNightTemp().toString());
-        textEditDayTemp = (TextView)findViewById(R.id.textViewEditDayTemp);
         textEditDayTemp.setText(schedule.getDayTemp().toString());
-        World.editImageButton = (ImageButton)findViewById(R.id.imageButtonEdit);
-        World.deleteImageButton = (ImageButton)findViewById(R.id.imageButtonDelete);
-        World.startTime();
-        onClickGeneral();
     }
 
+    private void initializeFields() {
+        textFract = (TextView) findViewById(R.id.temperFraction);
+        textUnit = (TextView) findViewById(R.id.temperUnit);
+        textCurrTemp = (TextView) findViewById(R.id.textViewCurrTemp);
+        blueLay = (RelativeLayout) findViewById(R.id.BluePartScreen);
+        topEditLay = (RelativeLayout) findViewById(R.id.TopEditLayer);
+        editTimeIntervalLayout = (RelativeLayout) findViewById(R.id.editTimeIntervalLayout);
+        textCurrTemp.setVisibility(View.INVISIBLE);
+        textViewEditEndTime = (TextView)findViewById(R.id.textViewEditEndTime);
+        textViewEditStartTime = (TextView)findViewById(R.id.textViewEditStartTime);
+        mainListView = (ListView) findViewById(R.id.MainScreeAllDays);
+        textEditNightTemp = (TextView)findViewById(R.id.textViewEditNightTemp);
+        World.editImageButton = (ImageButton)findViewById(R.id.imageButtonEdit);
+        World.deleteImageButton = (ImageButton)findViewById(R.id.imageButtonDelete);
+        textEditDayTemp = (TextView)findViewById(R.id.textViewEditDayTemp);
+    }
+
+    private void createAnimation() {
+        final PropertyAction fabAction = PropertyAction.newPropertyAction(textUnit).
+                scaleX(0).
+                scaleY(0).
+                duration(400).
+                interpolator(new AccelerateDecelerateInterpolator()).
+                build();
+        final PropertyAction headerAction = PropertyAction.newPropertyAction(blueLay).
+                interpolator(new DecelerateInterpolator()).
+                translationY(-200).
+                duration(300).
+                alpha(0.4f).
+                build();
+        final PropertyAction bottomAction = PropertyAction.newPropertyAction(mainListView).
+                translationY(500).
+                duration(450).
+                alpha(0f).
+                build();
+
+        Player.init().
+                animate(headerAction).
+                then().
+                animate(fabAction).
+                then().
+                animate(bottomAction).
+                play();
+    }
 
 
     @Override
