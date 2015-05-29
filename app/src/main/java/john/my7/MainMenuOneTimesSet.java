@@ -28,7 +28,9 @@ public class MainMenuOneTimesSet extends BaseAdapter {
     @Override
     public int getCount() {
         if (isEditMode){
-            return day.getNumberIntervals()+1;
+            if (day.getNumberIntervals() < World.MAX_INTERVALS)
+                return day.getNumberIntervals()+1;
+            else return day.getNumberIntervals();
         }
         else return day.getNumberIntervals();
     }

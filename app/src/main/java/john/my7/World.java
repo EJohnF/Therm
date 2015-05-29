@@ -6,6 +6,7 @@ import android.widget.ImageButton;
  * Created by John on 20.05.2015.
  */
 public class World {
+    public static int MAX_INTERVALS = 10;
     // the int from 0 to 6 correspond the days of week
     public static int CURRENT_DAY = 2;
     //NOW 1min in app = 1 sec in real
@@ -22,11 +23,12 @@ public class World {
                 while (true) {
                     try {
                         //NOW 1min in app = 1 sec in real
-                        Thread.sleep(1000);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     CURRENT_TIME.tick();
+                    mainActivity.refreshTime();
                 }
             }
         });

@@ -37,10 +37,11 @@ public class TimeTable {
         public int number;
         TimeInterval[] intervals;
         int settedIntervals;
+        boolean firstIsNight = true;
 
         public Day(String s) {
             name = s;
-            intervals = new TimeInterval[10];
+            intervals = new TimeInterval[World.MAX_INTERVALS];
             settedIntervals = 0;
         }
 
@@ -50,10 +51,38 @@ public class TimeTable {
         }
 
         public void addInterval(TimeInterval interval) {
-            intervals[settedIntervals] = interval;
-            settedIntervals++;
+            if (settedIntervals < World.MAX_INTERVALS) {
+                int i = 0;
+                while (i<settedIntervals && intervals[i].getStart().compareTo(interval.getStart()) < 0)
+                    i++;
+                if (i == settedIntervals)
+                    intervals[settedIntervals] = interval;
+                else {
+                    i--;
+                    intervals[i].setEnd(interval.getStart());
+                    int j = settedIntervals;
+                    while (j > i+1){
+                        intervals[j] = intervals[j-1];
+                        j--;
+                    }
+                    intervals[i+1] = interval;
+                    j = i+2;
+                    int k = 0;
+                    while (j<settedIntervals && intervals[j].getEnd().compareTo(intervals[i+1].getEnd())<0){
+                        intervals[j] = intervals[j+k+1];
+                        k++;
+                    }
+                    int p = 0;
+                    while (j+k+p <= settedIntervals){
+                        intervals[j+p] = intervals[j+k+p];
+                        p++;
+                    }
+                    intervals[i+2].setStart(intervals[i+1].getEnd());
+                    settedIntervals -= k;
+                }
+                settedIntervals++;
+            }
         }
-
         public int getNumberIntervals() {
             return settedIntervals;
         }

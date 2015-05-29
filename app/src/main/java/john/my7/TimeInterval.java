@@ -4,8 +4,27 @@ package john.my7;
  * Created by John on 17.05.2015.
  */
 public class TimeInterval {
-    Time start;
-    Time end;
+    private Time start;
+    private Time end;
+
+    public Time getStart() {
+        return start;
+    }
+
+    public void setStart(Time start) {
+        this.start.setHour(start.getHour());
+        this.start.setMinute(start.getMinute());
+    }
+
+    public Time getEnd() {
+        return end;
+    }
+
+    public void setEnd(Time end) {
+        this.end.setHour(end.getHour());
+        this.end.setMinute(end.getMinute());
+    }
+
     public TimeInterval(int startHour, int startMinute, int endHour, int endMinute){
         this.start = new Time(startHour,startMinute);
         this.end = new Time(endHour,endMinute);
@@ -18,6 +37,7 @@ public class TimeInterval {
         this.start = new Time(0,0);
         this.end = new Time(0,0);
     }
+
     @Override
     public String toString() {
         return start.toString()+" - " + end.toString();

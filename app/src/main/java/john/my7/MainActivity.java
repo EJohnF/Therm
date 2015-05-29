@@ -316,8 +316,8 @@ public class MainActivity extends ActionBarActivity {
 
     public void onClickEditTimeInterval(View v){
         editTimeIntervalLayout.setVisibility(View.VISIBLE);
-        textViewEditStartTime.setText(World.selected_time_interval.start.toString());
-        textViewEditEndTime.setText(World.selected_time_interval.end.toString());
+        textViewEditStartTime.setText(World.selected_time_interval.getStart().toString());
+        textViewEditEndTime.setText(World.selected_time_interval.getEnd().toString());
         helpful = World.selected_time_interval.copy();
         mainListView.setEnabled(false);
         topEditLay.setEnabled(false);
@@ -351,7 +351,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void onClickEditTimeIntervalStart(View v){
         DialogFragment newFragment = new TimePickerFragment();
-        ((TimePickerFragment)newFragment).setTime(World.selected_time_interval.start);
+        ((TimePickerFragment)newFragment).setTime(World.selected_time_interval.getStart());
         ((TimePickerFragment)newFragment).setActivity(this);
         newFragment.setCancelable(true);
         newFragment.show(getSupportFragmentManager(), "Set start time");
@@ -359,12 +359,15 @@ public class MainActivity extends ActionBarActivity {
     }
     public void onClickEditTimeIntervalEnd(View v){
         DialogFragment newFragment = new TimePickerFragment();
-        ((TimePickerFragment)newFragment).setTime(World.selected_time_interval.end);
+        ((TimePickerFragment)newFragment).setTime(World.selected_time_interval.getEnd());
         ((TimePickerFragment)newFragment).setActivity(this);
         newFragment.setCancelable(true);
         newFragment.show(getSupportFragmentManager(), "Set end time");
-        textViewEditStartTime.setText(World.selected_time_interval.start.toString());
-        textViewEditEndTime.setText(World.selected_time_interval.end.toString());
+        textViewEditStartTime.setText(World.selected_time_interval.getStart().toString());
+        textViewEditEndTime.setText(World.selected_time_interval.getEnd().toString());
     }
 
+    public void refreshTime(){
+
+    }
 }
