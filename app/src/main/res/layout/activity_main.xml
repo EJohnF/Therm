@@ -32,7 +32,8 @@
             android:focusable="true"
             android:clickable="true"
             android:layout_margin="10dp"
-            android:onClick="onClickPlane" />
+            android:onClick="onClickPlane"
+            android:layout_alignParentRight="true" />
 
         <Switch
             android:layout_width="wrap_content"
@@ -140,7 +141,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_alignParentTop="true"
-        android:background="@color/edit_head"
+        android:background="@color/blue"
         android:id="@+id/TopEditLayer"
         android:visibility="visible">
 
@@ -163,7 +164,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:background="@color/blue"
+            android:background="@color/edit_head"
             android:layout_marginBottom="25dp">
 
             <TableRow
@@ -184,7 +185,7 @@
                     android:layout_height="@dimen/in_edit_minus_plus_size"
                     android:id="@+id/imageView3"
                     android:layout_column="1"
-                    android:background="@drawable/minus_pic1"
+                    android:background="@drawable/minus_pic"
                     android:layout_marginLeft="35dp"
                     android:layout_gravity="center_vertical"
                     android:onClick="onClickMinusNightTemp" />
@@ -206,7 +207,7 @@
                     android:layout_width="@dimen/in_edit_minus_plus_size"
                     android:layout_height="@dimen/in_edit_minus_plus_size"
                     android:id="@+id/imageView5"
-                    android:background="@drawable/plus_pic1"
+                    android:background="@drawable/plus_pic"
                     android:layout_gravity="center_vertical"
                     android:onClick="onClickPlusNightTemp" />
             </TableRow>
@@ -229,7 +230,7 @@
                     android:layout_height="@dimen/in_edit_minus_plus_size"
                     android:id="@+id/imageView7"
                     android:layout_column="1"
-                    android:background="@drawable/minus_pic1"
+                    android:background="@drawable/minus_pic"
                     android:layout_marginLeft="35dp"
                     android:layout_gravity="center_vertical"
                     android:onClick="onClickMinusDayTemp" />
@@ -251,7 +252,7 @@
                     android:layout_width="@dimen/in_edit_minus_plus_size"
                     android:layout_height="@dimen/in_edit_minus_plus_size"
                     android:id="@+id/imageView4"
-                    android:background="@drawable/plus_pic1"
+                    android:background="@drawable/plus_pic"
                     android:layout_gravity="center_vertical"
                     android:onClick="onClickPlusDayTemp"
                     android:longClickable="false" />
@@ -303,7 +304,8 @@
         android:id="@+id/editTimeIntervalLayout"
         android:clickable="true"
         android:focusable="true"
-        android:alpha="1">
+        android:alpha="1"
+        android:visibility="invisible">
 
         <TextView
             android:layout_width="wrap_content"
