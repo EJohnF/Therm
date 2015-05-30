@@ -63,13 +63,17 @@ public class Temperature implements Comparable<Temperature>, Serializable{
     }
 
     @Override
-    public int compareTo(Temperature another) {
-        double th = (double)unit + (double)fraction/(double)10;
-        double an = (double)another.getUnit() + (double)another.getFraction()/(double)10;
-        if (th-an<0)
+    public int compareTo(Temperature a) {
+        if (unit > a.unit){
             return 1;
-        if (th-an>0)
-            return -1;
-        return 0;
+        }
+        else if (unit == a.unit){
+            if (fraction > a.fraction)
+                return 1;
+            else if (fraction<a.fraction)
+                return -1;
+            else return 0;
+        }
+        else return -1;
     }
 }

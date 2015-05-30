@@ -29,14 +29,24 @@ public class World {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    for (int i = 0; i<30;i++) {
+                    for (int i = 0; i<21;i++) {
                         CURRENT_TIME.tick();
                         if (CURRENT_TIME.compareTo(zeroTime) == 0){
                             CURRENT_DAY = (CURRENT_DAY+1)%7;
                             mainActivity.refreshTime();
                             System.out.println("Change day to "+ CURRENT_DAY);
                         }
-                        System.out.println(CURRENT_TIME.toString());
+                        System.out.println("current " + CURRENT_TEMPERATURE.toString() + " goal " + mainActivity.schedule.getCurrentGoal());
+                        if (CURRENT_TEMPERATURE.compareTo(mainActivity.schedule.getCurrentGoal()) > 0){
+                            if (i%5 == 0)
+                                System.out.println("decrement");
+                                CURRENT_TEMPERATURE.decremenTenth();
+                        }
+                        else if (CURRENT_TEMPERATURE.compareTo(mainActivity.schedule.getCurrentGoal()) < 0){
+                            if (i%10 == 0)
+                                System.out.println("increment");
+                            CURRENT_TEMPERATURE.incremenTenth();
+                        }
                     }
                     mainActivity.refreshTime();
                 }

@@ -40,7 +40,7 @@ public class MainActivity extends ActionBarActivity {
     private RelativeLayout editLayout;
     ListView mainListView;
 
-    private TimeTable schedule;
+    TimeTable schedule;
     private Switch switcher;
 
     private TextView editNightTempTextView;
@@ -219,10 +219,8 @@ public class MainActivity extends ActionBarActivity {
 
     private void checkForChangeBlueSize() {
         if (currentTemp.compareTo(goalTemp) == 0) {
-            //        blueLayout.setLayoutParams(normalParams);
             currentTempTextView.setVisibility(View.INVISIBLE);
         } else {
-            //   blueLayout.setLayoutParams(extendParams);
             currentTempTextView.setVisibility(View.VISIBLE);
         }
     }
@@ -247,13 +245,19 @@ public class MainActivity extends ActionBarActivity {
                         ((MainMenuAllTimeSet) mainListView.getAdapter()).outFromEditMode();
                         ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
                         onClickGeneral();
+                        blueLayout.setVisibility(View.VISIBLE);
+                        editLayout.setVisibility(View.INVISIBLE);
+                        World.IS_EDIT_MODE = false;
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
-                        schedule.changeFromFile(context, "tempForUndo");
+                        //schedule.changeFromFile(context, "tempForUndo");
                         ((MainMenuAllTimeSet) mainListView.getAdapter()).outFromEditMode();
                         ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
                         onClickGeneral();
+                        blueLayout.setVisibility(View.VISIBLE);
+                        editLayout.setVisibility(View.INVISIBLE);
+                        World.IS_EDIT_MODE = false;
                         break;
                 }
             }
@@ -262,15 +266,12 @@ public class MainActivity extends ActionBarActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Save Changes?").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
-        blueLayout.setVisibility(View.VISIBLE);
-        editLayout.setVisibility(View.INVISIBLE);
-        World.IS_EDIT_MODE = false;
-
     }
 
     public void onClickMinusNightTemp(View v) {
         schedule.getNightTemp().decremenTenth();
         editNightTempTextView.setText(schedule.getNightTemp().toString());
+        System.out.println("night temp: " + schedule.getNightTemp().toString());
         onClickGeneral();
     }
 
@@ -296,6 +297,8 @@ public class MainActivity extends ActionBarActivity {
         World.deleteImageButton.setVisibility(View.INVISIBLE);
         World.editImageButton.setVisibility(View.INVISIBLE);
         goalTemp = schedule.getCurrentGoal();
+        System.out.println("!!!current goal temp: " + goalTemp.toString());
+        System.out.println("!!!current night temp: " + schedule.getNightTemp().toString());
         fractionTextView.setText(goalTemp.getFractionString());
         unitTextView.setText(goalTemp.getUnitString());
         checkForChangeBlueSize();

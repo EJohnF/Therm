@@ -29,7 +29,8 @@ public class TimeTable  implements Serializable {
     }
 
     public void setDayTemp(Temperature day) {
-        this.day = day;
+        this.day.setFraction(day.getFraction());
+        this.day.setUnit(day.getUnit());
     }
 
     public Temperature getNightTemp() {
@@ -37,7 +38,8 @@ public class TimeTable  implements Serializable {
     }
 
     public void setNightTemp(Temperature night) {
-        this.night = night;
+        this.night.setFraction(night.getFraction());
+        this.night.setFraction(night.getUnit());
     }
 
     public class Day implements Serializable{
