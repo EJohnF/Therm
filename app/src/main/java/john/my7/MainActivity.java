@@ -388,4 +388,8 @@ public class MainActivity extends ActionBarActivity {
                 .setNegativeButton("No", dialogClickListener).show();
         onClickGeneral();
     }
+
+    public void onClickPlane(View view) {
+
+    }
 }

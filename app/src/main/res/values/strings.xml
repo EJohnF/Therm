@@ -6,4 +6,5 @@
     <string name="temperatureFraction">3</string>
     <string name="temperatureUnit">21</string>
     <string name="title_activity_activity_week_edit">ActivityWeekEdit</string>
+    <string name="title_activity_vacation_mode">vacation_mode</string>
 </resources>

@@ -5,4 +5,5 @@
     <color name="dark_grey">#ff444444</color>
     <color name="sun">#ffffea20</color>
     <color name="white">#ffffffff</color>
+    <color name="edit_head">#ffffff</color>
 </resources>
