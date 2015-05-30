@@ -1,17 +1,22 @@
 package john.my7;
 
-import java.util.LinkedList;
+import android.content.Context;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by John on 20.05.2015.
  */
 
-/*
-
-ОЧЕНЬ ВАЖНО!!!
- TODO: сейчас в реализации заложено то, что первый интервал времени - всегда ночь, и далее они чередуются с днём
- */
-public class TimeTable {
+public class TimeTable  implements Serializable{
+    public static final String fileName = "time_table";
     Day[] days;
     private Temperature day;
     private Temperature night;
@@ -37,97 +42,148 @@ public class TimeTable {
     public class Day {
         public String name;
         public int number;
-        LinkedList<TimeInterval> intervals;
+        ArrayList<TimeInterval> intervals;
         int settedIntervals;
         boolean firstIsNight = true;
 
         public Day(String s) {
             name = s;
-            intervals = new LinkedList<>();
+            intervals = new ArrayList<>();
             settedIntervals = 0;
         }
 
-        public Day(String s,int number) {
+        public Day(String s, int number) {
             this(s);
             this.number = number;
         }
 
         public void addInterval(TimeInterval interval) {
-            if (settedIntervals < World.MAX_INTERVALS) {
+            if (interval.getStart().compareTo(new Time(0, 0)) == 0) {
+                firstIsNight = !firstIsNight;
+            }
+            if (intervals.size() < World.MAX_INTERVALS) {
                 int i = 0;
-                while (i<settedIntervals && intervals [i].getStart().compareTo(interval.getStart()) < 0)
+                while (i < intervals.size() && intervals.get(i).compareTo(interval) < 0) {
                     i++;
-                if (i == settedIntervals)
-                    intervals[settedIntervals] = interval;
-                else {
-                    i--;
-                    intervals[i].setEnd(interval.getStart());
-                    int j = settedIntervals;
-                    while (j > i+1){
-                        intervals[j] = intervals[j-1];
-                        j--;
-                    }
-                    intervals[i+1] = interval;
-                    j = i+2;
-                    int k = 0;
-                    while (j<settedIntervals && intervals[j].getEnd().compareTo(intervals[i+1].getEnd())<0){
-                        intervals[j] = intervals[j+k+1];
-                        k++;
-                    }
-                    int p = 0;
-                    while (j+k+p <= settedIntervals){
-                        intervals[j+p] = intervals[j+k+p];
-                        p++;
-                    }
-                    intervals[i+2].setStart(intervals[i+1].getEnd());
-                    settedIntervals -= k;
                 }
-                settedIntervals++;
+                if (i == intervals.size() || i == 0) {
+                    intervals.add(interval);
+                } else {
+                    intervals.add(--i, interval);
+                }
+                wasEditInterval(interval);
             }
         }
+
+        public void sortIntervals() {
+            Collections.sort(intervals);
+        }
+
+        public void wasEditInterval(TimeInterval interval) {
+            sortIntervals();
+            int i = intervals.indexOf(interval);
+            if (i > 0) {
+                if (intervals.get(i-1).getStart().compareTo(interval.getStart()) == 0){
+                    intervals.get(i-1).setStart(interval.getEnd());
+                }
+                else {
+                    intervals.get(i - 1).setEnd(interval.getStart());
+                }
+            }
+            sortIntervals();
+            if (i < intervals.size() - 1) {
+                int p = 1;
+                while (i + p < intervals.size() &&
+                        intervals.get(i + p).getEnd().compareTo(intervals.get(i).getEnd()) < 0)
+                    intervals.remove(i + p);
+            }
+            correctIntervals();
+        }
+
+        public void deleteTimeInterval(TimeInterval interval){
+            if (interval.getStart().compareTo(new Time(0,0)) == 0)
+                firstIsNight = !firstIsNight;
+            if (intervals.size() == 1)
+                return;
+            intervals.remove(interval);
+            correctIntervals();
+        }
+        public void correctIntervals(){
+            if (intervals.size() == 0)
+                return;
+            for (int i = 0; i < intervals.size()-1;i++){
+                if (intervals.get(i).getStart().compareTo(intervals.get(i).getEnd()) == 0) {
+                    intervals.remove(i);
+                    continue;
+                }
+                intervals.get(i).setEnd(intervals.get(i+1).getStart());
+            }
+            intervals.get(intervals.size()-1).setEnd(new Time(23, 59));
+            intervals.get(0).setStart(new Time(0, 0));
+        }
+
         public int getNumberIntervals() {
             return intervals.size();
         }
 
         public String getStringInterval(int position) {
-            return intervals[position].toString();
+            return intervals.get(position).toString();
         }
 
         public IntervalType getIntervalType(int position) {
-            if (position % 2 == 0)
+            int t = firstIsNight ? 0 : 1;
+            if ((position + t) % 2 == 0)
                 return IntervalType.NIGHT;
             else return IntervalType.DAY;
         }
-        public String getName(){
+
+        public String getName() {
             return name;
         }
-        public int getNumber(){
+
+        public int getNumber() {
             return number;
         }
-        public Temperature getCurrentTemp(){
-            for (int i = 0; i < settedIntervals; i++) {
-                if (intervals[i].isInInterval(World.CURRENT_TIME)){
-                    // TODO: re-implement here, for correctly work when the first temperature is not night
-                    if (i % 2 == 0){
+
+        public Temperature getCurrentTemp() {
+            for (int i = 0; i < intervals.size(); i++) {
+                if (intervals.get(i).isInInterval(World.CURRENT_TIME)) {
+                    if (getIntervalType(i) == IntervalType.DAY)
                         return day;
-                    }
                     else return night;
                 }
             }
             return day;
         }
 
-        public TimeInterval getTimeInterval(int position){
-            return intervals[position];
+        public TimeInterval getTimeInterval(int position) {
+            return intervals.get(position);
         }
     }
 
-    public TimeTable() {
+    public TimeTable(Context context) {
         days = new Day[7];
         for (int i = 0; i < 7; i++) {
-            days[i] = new Day(dayName[i],i);
+            days[i] = new Day(dayName[i], i);
+            days[i].addInterval(new TimeInterval(0,0,23,59));
+            days[i].firstIsNight = true;
         }
-        days[0].addInterval(new TimeInterval(0, 0, 6, 0));
+        try {
+            FileInputStream fis = context.openFileInput(fileName);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            TimeTable upload = (TimeTable) is.readObject();
+            this.days = upload.days;
+            this.day = upload.day;
+            this.night = upload.night;
+            is.close();
+            fis.close();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+     /*   days[0].addInterval(new TimeInterval(0, 0, 6, 0));
         days[0].addInterval(new TimeInterval(6, 0, 8, 0));
         days[0].addInterval(new TimeInterval(8, 0, 12, 15));
         days[0].addInterval(new TimeInterval(12, 15, 13, 15));
@@ -145,15 +201,27 @@ public class TimeTable {
         days[3].addInterval(new TimeInterval(0, 0, 6, 0));
 
         days[4].addInterval(new TimeInterval(0, 0, 6, 0));
-        days[4].addInterval(new TimeInterval(6, 0, 10, 0));
+        days[4].addInterval(new TimeInterval(6, 0, 10, 0));*/
     }
 
     public Day getDay(int position) {
         return days[position];
     }
 
-    public Temperature getCurrentGoal(){
+    public Temperature getCurrentGoal() {
         return days[World.CURRENT_DAY].getCurrentTemp();
+    }
+
+    public void SaveData(Context context){
+        try {
+            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(this);
+            os.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

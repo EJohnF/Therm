@@ -53,7 +53,7 @@ public class MainMenuOneTimesSet extends BaseAdapter {
         TextView textView = (TextView) rowView.findViewById(R.id.textViewItem);
         ImageView rightView = (ImageView) rowView.findViewById(R.id.right_view);
         if (day.getIntervalType(position) == IntervalType.DAY) {
-            rightView.setImageResource(R.drawable.sun);
+            rightView.setImageResource(R.drawable.sun1);
         } else {
             rightView.setImageResource(R.drawable.moon);
         }

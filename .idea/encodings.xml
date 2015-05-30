@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/john/my7/MainActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/john/my7/MainMenuAllTimeSet.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/john/my7/MainMenuOneTimesSet.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/john/my7/TimeInterval.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/john/my7/TimeTable.java" charset="UTF-8" />
   </component>
 </project>

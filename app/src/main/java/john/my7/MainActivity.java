@@ -32,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
     private TextView zeroTextView;
     private RelativeLayout blueLayout;
     private RelativeLayout editLayout;
-    private ListView mainListView;
+    ListView mainListView;
 
     private TimeTable schedule;
     private Switch switcher;
@@ -67,7 +67,7 @@ public class MainActivity extends ActionBarActivity {
         editLayout.setVisibility(View.INVISIBLE);
         editTimeIntervalLayout.setVisibility(View.INVISIBLE);
 
-        schedule = new TimeTable();
+        schedule = new TimeTable(this);
         schedule.setDayTemp(new Temperature(24, 5));
         schedule.setNightTemp(new Temperature(20, 0));
 
@@ -118,6 +118,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         wasPaused = true;
+        schedule.SaveData(this);
     }
 
     private void createAnimation() {
@@ -287,9 +288,9 @@ public class MainActivity extends ActionBarActivity {
         onClickGeneral();
         System.out.println(helpful.toString());
         if (helpful.isEmpty()) { // это значит что была нажата "добавить интервал"
-            System.out.println(World.SELECTED_DAY.toString());
             World.SELECTED_DAY.addInterval(World.selected_time_interval);
         }
+        World.SELECTED_DAY.wasEditInterval(World.selected_time_interval);
         ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
     }
 
@@ -299,8 +300,6 @@ public class MainActivity extends ActionBarActivity {
         editLayout.setEnabled(true);
         onClickGeneral();
         World.selected_time_interval.setFrom(helpful);
-
-
         ValueAnimator animator = ObjectAnimator.ofFloat(editTimeIntervalLayout, "alpha", 1f, 0f);
         animator.setDuration(1000);
         animator.start();
@@ -328,5 +327,11 @@ public class MainActivity extends ActionBarActivity {
 
     public void refreshTime(){
 
+    }
+
+    public void onClickDeleteTimeInterval(View v){
+        DialogFragment fragment = new DialogFragment();
+        fragment.show(getSupportFragmentManager(),"agreement of deleting");
+        onClickGeneral();
     }
 }

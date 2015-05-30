@@ -21,6 +21,9 @@ public class TimeInterval implements Comparable<TimeInterval> {
     }
 
     public void setEnd(Time end) {
+        if (start.compareTo(end)>0){
+            setStart(end);
+        }
         this.end.setHour(end.getHour());
         this.end.setMinute(end.getMinute());
     }
