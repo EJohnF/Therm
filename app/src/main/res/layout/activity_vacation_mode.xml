@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context="john.my7.vacation_mode">
+    <ImageButton
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:id="@+id/calendarButton"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/back"
+        android:longClickable="false"
+        android:paddingTop="10dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_margin="10dp"
+        android:onClick="onClickCalendar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/temperatureUnit"
+        android:textSize="85sp"
+        android:id="@+id/temperUnit"
+        android:layout_below="@+id/switchDayNight"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:layout_alignParentRight="false"
+        android:layout_toLeftOf="@+id/textPoint" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/temperatureFraction"
+        android:id="@+id/temperFraction"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/textPoint"
+        android:textSize="65sp"
+        android:layout_alignBottom="@+id/temperUnit"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="7dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="o"
+        android:id="@+id/textO"
+        android:layout_toRightOf="@+id/temperFraction"
+        android:layout_toEndOf="@+id/temperFraction"
+        android:layout_alignTop="@+id/temperUnit"
+        android:singleLine="false"
+        android:textColor="@android:color/white"
+        android:textSize="40sp"
+        android:textStyle="normal"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="."
+        android:id="@+id/textPoint"
+        android:layout_centerHorizontal="true"
+        android:textSize="60sp"
+        android:textColor="@android:color/white"
+        android:layout_alignBottom="@+id/temperUnit"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="5dp" />
+
+    <ImageButton
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:id="@+id/imageMinusView"
+        android:background="@drawable/minus"
+        android:layout_alignTop="@+id/temperFraction"
+        android:clickable="true"
+        android:onClick="onClickMinus"
+        android:layout_toLeftOf="@+id/temperUnit"
+        android:layout_marginRight="10dp" />
+    <ImageButton
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:id="@+id/imagePlusView"
+        android:background="@drawable/plus"
+        android:clickable="true"
+        android:onClick="onClickPlus"
+        android:layout_alignTop="@+id/temperFraction"
+        android:layout_toRightOf="@+id/textViewCurrTemp"
+        android:layout_toEndOf="@+id/textViewCurrTemp"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="current  21.3"
+        android:id="@+id/textViewCurrTemp"
+        android:textSize="30dp"
+        android:textColor="#ffffffff"
+        android:visibility="visible"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="0dp" />
+
+</RelativeLayout>

@@ -21,6 +21,18 @@
             android:clickable="true"
             android:layout_margin="10dp"
             android:onClick="onClickCalendar" />
+        <ImageButton
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:id="@+id/vacationModeButton"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/plane"
+            android:longClickable="false"
+            android:paddingTop="10dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_margin="10dp"
+            android:onClick="onClickPlane" />
 
         <Switch
             android:layout_width="wrap_content"
@@ -128,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_alignParentTop="true"
-        android:background="@color/blue"
+        android:background="@color/edit_head"
         android:id="@+id/TopEditLayer"
         android:visibility="visible">
 
