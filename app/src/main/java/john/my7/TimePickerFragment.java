@@ -5,7 +5,6 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
-import android.widget.BaseAdapter;
 import android.widget.TimePicker;
 
 /**
@@ -37,8 +36,11 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         time.setMinute(minute);
         if (activity != null){
             activity.editTimeIntervalLayout.requestFocus();
-            activity.textViewEditStartTime.setText(World.selected_time_interval.start.toString());
-            activity.textViewEditEndTime.setText(World.selected_time_interval.end.toString());
+            activity.textViewEditStartTime.setText(World.selected_time_interval.getStart().toString());
+            if (World.selected_time_interval.getStart().compareTo(World.selected_time_interval.getEnd()) > 0){
+                World.selected_time_interval.setEnd(World.selected_time_interval.getStart());
+            }
+            activity.textViewEditEndTime.setText(World.selected_time_interval.getEnd().toString());
         }
 
     }

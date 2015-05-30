@@ -1,15 +1,22 @@
 package john.my7;
 
+import java.io.Serializable;
+
 /**
  * Created by John on 25.05.2015.
  */
-public class Time implements Comparable<Time>{
+public class Time implements Comparable<Time>, Serializable {
     private int hour;
     private int minute;
 
     public Time(int hour, int minute){
         this.hour = hour;
         this.minute = minute;
+    }
+
+    public Time(Time time) {
+        hour = time.getHour();
+        minute = time.getMinute();
     }
 
     public int getHour() {

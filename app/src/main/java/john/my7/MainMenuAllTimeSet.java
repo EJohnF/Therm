@@ -16,6 +16,7 @@ public class MainMenuAllTimeSet extends BaseAdapter {
     MainMenuOneTimesSet[] lists;
     Context context;
     TimeTable timeTable;
+    boolean isEditMode;
 
     public MainMenuAllTimeSet(Context context, TimeTable table){
         this.context = context;
@@ -51,7 +52,13 @@ public class MainMenuAllTimeSet extends BaseAdapter {
 
         int cur = (position+World.CURRENT_DAY)%7;
         ViewGroup.LayoutParams lp = listView.getLayoutParams();
-        lp.height = 80*timeTable.getDay(cur).getNumberIntervals();
+        int scale = timeTable.getDay(cur).getNumberIntervals();
+        if (isEditMode)
+            scale++;
+        /*TODO вот это число 80  надо как-то пересчитывать в зависимости от размеров экрана
+         например  потмоу что на планшете 80 - это много
+        */
+        lp.height = 80*scale;
         listView.setLayoutParams(lp);
 //        ListView.LayoutParams normalParams = new ListView.LayoutParams(parent.getWidth(), 60*timeTable.getDay(cur).getNumberIntervals());
 //        listView.setLayoutParams(normalParams);
@@ -69,6 +76,22 @@ public class MainMenuAllTimeSet extends BaseAdapter {
         s+=timeTable.getDay(cur).getName();
         textView.setText(s);
         return rowView;
+    }
+    public void enterToEditMode(){
+        isEditMode = true;
+        for (int i = 0; i<7;i++){
+            lists[i].enterToEditMode();
+        }
+    }
+    public void outFromEditMode(){
+        isEditMode = false;
+        for (int i = 0; i<7;i++){
+            lists[i].outFromEditMode();
+        }
+    }
+
+    public void setTimeTable(TimeTable table){
+        timeTable = table;
     }
 
 }
