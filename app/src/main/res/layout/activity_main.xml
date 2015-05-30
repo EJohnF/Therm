@@ -157,6 +157,7 @@
             android:layout_margin="10dp"
             android:onClick="onClickOk" />
 
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -164,7 +165,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:background="@color/edit_head"
+            android:background="@drawable/drop_shadow"
             android:layout_marginBottom="25dp">
 
             <TableRow
@@ -258,7 +259,11 @@
                     android:longClickable="false" />
 
             </TableRow>
-
+            <!--<View-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:background="@drawable/drop_shadow" >-->
+            <!--</View>-->
         </TableLayout>
     </RelativeLayout>
 

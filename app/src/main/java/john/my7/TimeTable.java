@@ -1,6 +1,7 @@
 package john.my7;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,7 +16,7 @@ import java.util.Collections;
  * Created by John on 20.05.2015.
  */
 
-public class TimeTable  implements Serializable{
+public class TimeTable  implements Serializable {
     public static final String fileName = "time_table";
     Day[] days;
     private Temperature day;
@@ -227,8 +228,9 @@ public class TimeTable  implements Serializable{
         saveData(context,fileName);
     }
     // TODO: пока не работет. А именно: не сохраняется/загружается корректно. FileNotFoundException
-    public void saveData(Context context, String fileName){
+    public void saveData(Context context, String fileName) {
         try {
+            Log.d("hey", "save data with file " + fileName);
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(this);
@@ -238,8 +240,9 @@ public class TimeTable  implements Serializable{
             e.printStackTrace();
         }
     }
-    public void changeFromFile(Context context, String fileName){
+    public void changeFromFile(Context context, String fileName) {
         try {
+            Log.d("hey", "change from file with file " + fileName);
             FileInputStream fis = context.openFileInput(fileName);
             ObjectInputStream is = new ObjectInputStream(fis);
             TimeTable upload = (TimeTable) is.readObject();
