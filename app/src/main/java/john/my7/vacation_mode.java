@@ -1,17 +1,25 @@
 package john.my7;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 
 public class vacation_mode extends ActionBarActivity {
 
+    TextView textUnit;
+    TextView textFraction;
+    TextView textCurrent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_mode);
+        textCurrent = (TextView)findViewById(R.id.textViewCurrTemp);
+        textFraction = (TextView)findViewById(R.id.temperFraction);
+        textUnit = (TextView) findViewById(R.id.temperUnit);
     }
 
     @Override
@@ -34,5 +42,25 @@ public class vacation_mode extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onClickPlus(View view) {
+        World.vacation_goal_temp.incremenTenth();
+        refreshTemps();
+    }
+
+    public void onClickMinus(View view) {
+        World.vacation_goal_temp.decremenTenth();
+        refreshTemps();
+    }
+
+    public void refreshTemps(){
+        textCurrent.setText("current " + World.CURRENT_TEMPERATURE.toString());
+        textUnit.setText(World.vacation_goal_temp.getUnitString());
+        textFraction.setText(World.vacation_goal_temp.getFractionString());
+
+    }
+    public void onClickBack(View view) {
+        finish();
     }
 }

@@ -58,7 +58,7 @@ public class MainMenuAllTimeSet extends BaseAdapter {
         /*TODO вот это число 80  надо как-то пересчитывать в зависимости от размеров экрана
          например  потмоу что на планшете 80 - это много
         */
-        lp.height = 80*scale;
+        lp.height = 82*scale;
         listView.setLayoutParams(lp);
 //        ListView.LayoutParams normalParams = new ListView.LayoutParams(parent.getWidth(), 60*timeTable.getDay(cur).getNumberIntervals());
 //        listView.setLayoutParams(normalParams);
@@ -93,5 +93,17 @@ public class MainMenuAllTimeSet extends BaseAdapter {
     public void setTimeTable(TimeTable table){
         timeTable = table;
     }
-
+    int lastPosition = 0;
+    int lastDay = World.CURRENT_DAY;
+    public void timeTick() {
+        int pos = timeTable.getDay(World.CURRENT_DAY).getPositionByTime(World.CURRENT_TIME);
+        if (pos != lastPosition){
+            lastPosition = pos;
+            System.out.println("Change timeInterval");
+            notifyDataSetChanged();
+        }
+        if (lastDay != World.CURRENT_DAY){
+            notifyDataSetChanged();
+        }
+    }
 }

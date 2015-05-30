@@ -36,6 +36,9 @@ public class Temperature implements Comparable<Temperature>, Serializable{
     }
 
     public void incremenTenth(){
+        if (unit == 30){
+            return;
+        }
         fraction++;
         if (fraction > 9) {
             fraction = 0;
@@ -44,6 +47,9 @@ public class Temperature implements Comparable<Temperature>, Serializable{
     }
 
     public void decremenTenth(){
+        if (unit == 5 && fraction == 0){
+            return;
+        }
         fraction--;
         if (fraction < 0) {
             fraction = 9;

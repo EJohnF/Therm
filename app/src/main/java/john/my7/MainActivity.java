@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -22,10 +23,6 @@ import android.widget.TextView;
 
 import com.eftimoff.androidplayer.Player;
 import com.eftimoff.androidplayer.actions.property.PropertyAction;
-
-/*
-TODO: ����� ���������� ������ ��������� ������� ���������. ������ �� ������������ �� ������ onClickGeneral() ��� ������  ������ ����
- */
 
 public class MainActivity extends ActionBarActivity {
     RelativeLayout editTimeIntervalLayout;
@@ -363,7 +360,16 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void refreshTime(){
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                currentTempTextView.setText("current "+ World.CURRENT_TEMPERATURE.toString());
+                Temperature t = schedule.getCurrentGoal();
+                unitTextView.setText(t.getUnitString());
+                fractionTextView.setText(t.getFractionString());
+                ((MainMenuAllTimeSet) mainListView.getAdapter()).timeTick();
+            }
+        });
     }
 
     public void onClickDeleteTimeInterval(View v){
@@ -390,6 +396,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickPlane(View view) {
+        Intent intent = new Intent(this, vacation_mode.class);
+        startActivity(intent);
 
     }
 }

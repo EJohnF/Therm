@@ -57,8 +57,10 @@ public class MainMenuOneTimesSet extends BaseAdapter {
         } else {
             rightView.setImageResource(R.drawable.moon);
         }
-        if(position == 0 && day.getNumber()==World.CURRENT_DAY){
-            rowView.setBackgroundResource(R.drawable.list_item_shape_red);
+        if(day.getNumber()==World.CURRENT_DAY){
+            if (day.getPositionByTime(World.CURRENT_TIME) == position) {
+                rowView.setBackgroundResource(R.drawable.list_item_shape_red);
+            }
         }
         if (isEditMode && position == day.getNumberIntervals()){
             ImageView leftView = (ImageView) rowView.findViewById(R.id.view_clock);

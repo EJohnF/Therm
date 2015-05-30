@@ -170,6 +170,14 @@ public class TimeTable  implements Serializable{
         public TimeInterval getTimeInterval(int position) {
             return intervals.get(position);
         }
+
+        public int getPositionByTime(Time currentTime) {
+            for (int i = 0; i< intervals.size();i++){
+                if (intervals.get(i).getEnd().compareTo(currentTime) >= 0)
+                    return i;
+            }
+            return 0;
+        }
     }
 
     public TimeTable(Context context) {
@@ -183,6 +191,14 @@ public class TimeTable  implements Serializable{
             days[i].addInterval(new TimeInterval(0, 0, 23, 59));
             days[i].firstIsNight = true;
         }
+        days[0].addInterval(new TimeInterval(2, 0, 4, 0));
+        days[0].addInterval(new TimeInterval(4, 0, 6, 15));
+        days[0].addInterval(new TimeInterval(6, 15, 13, 15));
+
+        days[1].addInterval(new TimeInterval(0, 0, 6, 0));
+        days[1].addInterval(new TimeInterval(6, 0, 8, 0));
+        days[1].addInterval(new TimeInterval(8, 0, 12, 15));
+        days[1].addInterval(new TimeInterval(12, 15, 13, 15));
         try {
             FileInputStream fis = context.openFileInput(fileName);
             ObjectInputStream is = new ObjectInputStream(fis);

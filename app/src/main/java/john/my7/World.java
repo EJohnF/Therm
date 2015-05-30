@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 public class World {
     public static int MAX_INTERVALS = 10;
     // the int from 0 to 6 correspond the days of week
-    public static int CURRENT_DAY = 2;
+    public static int CURRENT_DAY = 0;
     //NOW 1min in app = 1 sec in real
     public static Time CURRENT_TIME = new Time(0,0);
     public static Temperature CURRENT_TEMPERATURE = new Temperature(23,5);
@@ -16,22 +16,33 @@ public class World {
     public static boolean IS_EDIT_MODE = false;
     public static TimeTable.Day SELECTED_DAY;
     public static MainActivity mainActivity;
+    public static Temperature vacation_goal_temp = new Temperature(22,5);
     public static void startTime(){
         Thread ticker = new Thread(new Runnable() {
             @Override
             public void run() {
+                Time zeroTime = new Time(0,0);
                 while (true) {
                     try {
                         //NOW 1min in app = 1 sec in real
-                        Thread.sleep(100);
+                        Thread.sleep(1500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    CURRENT_TIME.tick();
+                    for (int i = 0; i<30;i++) {
+                        CURRENT_TIME.tick();
+                        if (CURRENT_TIME.compareTo(zeroTime) == 0){
+                            CURRENT_DAY = (CURRENT_DAY+1)%7;
+                            mainActivity.refreshTime();
+                            System.out.println("Change day to "+ CURRENT_DAY);
+                        }
+                        System.out.println(CURRENT_TIME.toString());
+                    }
                     mainActivity.refreshTime();
                 }
             }
         });
+        ticker.start();
     }
     //temporary//
     public static ImageButton editImageButton;
