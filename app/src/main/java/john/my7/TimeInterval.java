@@ -3,7 +3,7 @@ package john.my7;
 /**
  * Created by John on 17.05.2015.
  */
-public class TimeInterval {
+public class TimeInterval implements Comparable<TimeInterval> {
     private Time start;
     private Time end;
 
@@ -66,5 +66,10 @@ public class TimeInterval {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int compareTo(TimeInterval another) {
+        return start.compareTo(another.getStart());
     }
 }

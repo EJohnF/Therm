@@ -1,5 +1,7 @@
 package john.my7;
 
+import java.util.LinkedList;
+
 /**
  * Created by John on 20.05.2015.
  */
@@ -35,13 +37,13 @@ public class TimeTable {
     public class Day {
         public String name;
         public int number;
-        TimeInterval[] intervals;
+        LinkedList<TimeInterval> intervals;
         int settedIntervals;
         boolean firstIsNight = true;
 
         public Day(String s) {
             name = s;
-            intervals = new TimeInterval[World.MAX_INTERVALS];
+            intervals = new LinkedList<>();
             settedIntervals = 0;
         }
 
@@ -53,7 +55,7 @@ public class TimeTable {
         public void addInterval(TimeInterval interval) {
             if (settedIntervals < World.MAX_INTERVALS) {
                 int i = 0;
-                while (i<settedIntervals && intervals[i].getStart().compareTo(interval.getStart()) < 0)
+                while (i<settedIntervals && intervals [i].getStart().compareTo(interval.getStart()) < 0)
                     i++;
                 if (i == settedIntervals)
                     intervals[settedIntervals] = interval;
@@ -84,7 +86,7 @@ public class TimeTable {
             }
         }
         public int getNumberIntervals() {
-            return settedIntervals;
+            return intervals.size();
         }
 
         public String getStringInterval(int position) {
