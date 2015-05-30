@@ -325,7 +325,9 @@ public class MainActivity extends ActionBarActivity {
         if (helpful.isEmpty()) { // это значит что была нажата "добавить интервал"
             World.SELECTED_DAY.addInterval(World.selected_time_interval);
         }
-        World.SELECTED_DAY.wasEditInterval(World.selected_time_interval);
+        else {
+            World.SELECTED_DAY.wasEditInterval(World.selected_time_interval);
+        }
         ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
     }
 

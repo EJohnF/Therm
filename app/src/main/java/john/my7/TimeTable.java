@@ -43,13 +43,11 @@ public class TimeTable  implements Serializable{
         public String name;
         public int number;
         ArrayList<TimeInterval> intervals;
-        int settedIntervals;
         boolean firstIsNight = true;
 
         public Day(String s) {
             name = s;
             intervals = new ArrayList<>();
-            settedIntervals = 0;
         }
 
         public Day(String s, int number) {
@@ -84,18 +82,23 @@ public class TimeTable  implements Serializable{
             int i = intervals.indexOf(interval);
             if (i > 0) {
                 if (intervals.get(i-1).getStart().compareTo(interval.getStart()) == 0){
+                    // если с другим интервалом одинаковое время начала, то сдвигаю его вперёд
                     intervals.get(i-1).setStart(interval.getEnd());
                 }
                 else {
+                    //иначе предыдёщий конец сдвигается в начало нового
                     intervals.get(i - 1).setEnd(interval.getStart());
                 }
             }
             sortIntervals();
             if (i < intervals.size() - 1) {
                 int p = 1;
-                while (i + p < intervals.size() &&
-                        intervals.get(i + p).getEnd().compareTo(intervals.get(i).getEnd()) < 0)
+                // удаление интервалов, которы новый перегрывает
+                while (i + p < intervals.size() && intervals.get(i + p).getEnd().compareTo(intervals.get(i).getEnd()) <= 0)
                     intervals.remove(i + p);
+            }
+            if (i < intervals.size() - 1) {
+                intervals.get(i + 1).setStart(intervals.get(i).getEnd());
             }
             correctIntervals();
         }
@@ -111,19 +114,23 @@ public class TimeTable  implements Serializable{
         public void correctIntervals(){
             if (intervals.size() == 0)
                 return;
-            for (int i = 0; i < intervals.size()-1;i++){
+            for (int i = 0; i < intervals.size();i++) {
                 if (intervals.get(i).getStart().compareTo(intervals.get(i).getEnd()) == 0) {
                     intervals.remove(i);
-                    continue;
+                    //удаление нулевых интервалов
                 }
+            }
+            for (int i = 0; i < intervals.size()-1;i++){
                 intervals.get(i).setEnd(intervals.get(i+1).getStart());
             }
             int i = intervals.size()-1;
             if (intervals.get(i).getStart().compareTo(intervals.get(i).getEnd()) == 0) {
                 intervals.remove(i);
             }
-            intervals.get(intervals.size()-1).setEnd(new Time(23, 59));
             intervals.get(0).setStart(new Time(0, 0));
+            if (intervals.get(intervals.size()-1).getEnd().compareTo(new Time(23, 59)) < 0){
+                intervals.add(new TimeInterval(intervals.get(intervals.size()-1).getEnd().getHour(),intervals.get(intervals.size()-1).getEnd().getMinute(), 23, 59));
+            }
         }
 
         public int getNumberIntervals() {

@@ -34,9 +34,9 @@ public class TimeInterval implements Comparable<TimeInterval>, Serializable {
         this.start = new Time(startHour,startMinute);
         this.end = new Time(endHour,endMinute);
     }
-    public TimeInterval(Time start, Time end){
-        this.start = start;
-        this.end = end;
+    public TimeInterval(Time s, Time e){
+        this.start = new Time(s.getHour(),s.getMinute());
+        this.end = new Time(s.getHour(),s.getMinute());
     }
     public TimeInterval(){
         this.start = new Time(0,0);
