@@ -1,9 +1,11 @@
 package john.my7;
 
+import java.io.Serializable;
+
 /**
  * Created by John on 20.05.2015.
  */
-public class Temperature implements Comparable<Temperature>{
+public class Temperature implements Comparable<Temperature>, Serializable{
     private int unit;
     private int fraction;
     public Temperature(int unit, int fraction){

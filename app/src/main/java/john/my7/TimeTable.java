@@ -39,7 +39,7 @@ public class TimeTable  implements Serializable{
         this.night = night;
     }
 
-    public class Day {
+    public class Day implements Serializable{
         public String name;
         public int number;
         ArrayList<TimeInterval> intervals;
@@ -69,7 +69,7 @@ public class TimeTable  implements Serializable{
                 if (i == intervals.size() || i == 0) {
                     intervals.add(interval);
                 } else {
-                    intervals.add(--i, interval);
+                    intervals.add(i, interval);
                 }
                 wasEditInterval(interval);
             }
@@ -118,6 +118,10 @@ public class TimeTable  implements Serializable{
                 }
                 intervals.get(i).setEnd(intervals.get(i+1).getStart());
             }
+            int i = intervals.size()-1;
+            if (intervals.get(i).getStart().compareTo(intervals.get(i).getEnd()) == 0) {
+                intervals.remove(i);
+            }
             intervals.get(intervals.size()-1).setEnd(new Time(23, 59));
             intervals.get(0).setStart(new Time(0, 0));
         }
@@ -162,10 +166,14 @@ public class TimeTable  implements Serializable{
     }
 
     public TimeTable(Context context) {
+        this(context,fileName);
+    }
+
+    public TimeTable(Context context, String fileName) {
         days = new Day[7];
         for (int i = 0; i < 7; i++) {
             days[i] = new Day(dayName[i], i);
-            days[i].addInterval(new TimeInterval(0,0,23,59));
+            days[i].addInterval(new TimeInterval(0, 0, 23, 59));
             days[i].firstIsNight = true;
         }
         try {
@@ -182,26 +190,6 @@ public class TimeTable  implements Serializable{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-     /*   days[0].addInterval(new TimeInterval(0, 0, 6, 0));
-        days[0].addInterval(new TimeInterval(6, 0, 8, 0));
-        days[0].addInterval(new TimeInterval(8, 0, 12, 15));
-        days[0].addInterval(new TimeInterval(12, 15, 13, 15));
-
-        days[1].addInterval(new TimeInterval(0, 0, 6, 0));
-        days[1].addInterval(new TimeInterval(6, 0, 8, 0));
-        days[1].addInterval(new TimeInterval(8, 0, 12, 15));
-        days[1].addInterval(new TimeInterval(12, 15, 13, 15));
-
-        days[2].addInterval(new TimeInterval(0, 0, 6, 0));
-        days[2].addInterval(new TimeInterval(6, 0, 8, 0));
-        days[2].addInterval(new TimeInterval(8, 0, 12, 15));
-        days[2].addInterval(new TimeInterval(12, 15, 13, 15));
-
-        days[3].addInterval(new TimeInterval(0, 0, 6, 0));
-
-        days[4].addInterval(new TimeInterval(0, 0, 6, 0));
-        days[4].addInterval(new TimeInterval(6, 0, 10, 0));*/
     }
 
     public Day getDay(int position) {
@@ -212,7 +200,11 @@ public class TimeTable  implements Serializable{
         return days[World.CURRENT_DAY].getCurrentTemp();
     }
 
-    public void SaveData(Context context){
+    public void saveData(Context context){
+        saveData(context,fileName);
+    }
+    // TODO: пока не работет. А именно: не сохраняется/загружается корректно. FileNotFoundException
+    public void saveData(Context context, String fileName){
         try {
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
@@ -220,6 +212,20 @@ public class TimeTable  implements Serializable{
             os.close();
             fos.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void changeFromFile(Context context, String fileName){
+        try {
+            FileInputStream fis = context.openFileInput(fileName);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            TimeTable upload = (TimeTable) is.readObject();
+            this.days = upload.days;
+            this.day = upload.day;
+            this.night = upload.night;
+            is.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

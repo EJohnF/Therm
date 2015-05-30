@@ -80,7 +80,8 @@ public class MainMenuOneTimesSet extends BaseAdapter {
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (World.IS_EDIT_MODE) {
+                    if (isEditMode) {
+                        System.out.println("on click an row in if");
                         World.SELECTED_DAY = day;
                         int[] locat = new int[2];
                         v.getLocationOnScreen(locat);

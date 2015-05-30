@@ -90,4 +90,8 @@ public class MainMenuAllTimeSet extends BaseAdapter {
         }
     }
 
+    public void setTimeTable(TimeTable table){
+        timeTable = table;
+    }
+
 }

@@ -2,15 +2,24 @@ package john.my7;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
+import android.widget.TextView;
+
 import com.eftimoff.androidplayer.Player;
 import com.eftimoff.androidplayer.actions.property.PropertyAction;
 
@@ -118,7 +127,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         wasPaused = true;
-        schedule.SaveData(this);
+        schedule.saveData(this);
     }
 
     private void createAnimation() {
@@ -227,15 +236,39 @@ public class MainActivity extends ActionBarActivity {
         World.IS_EDIT_MODE = true;
         ((MainMenuAllTimeSet) mainListView.getAdapter()).enterToEditMode();
         ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
+        schedule.saveData(this, "tempFotUndo");
     }
 
     public void onClickOk(View v) {
+
+        final Context context = this;
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        ((MainMenuAllTimeSet) mainListView.getAdapter()).outFromEditMode();
+                        ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
+                        onClickGeneral();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        schedule.changeFromFile(context, "tempForUndo");
+                        ((MainMenuAllTimeSet) mainListView.getAdapter()).outFromEditMode();
+                        ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
+                        onClickGeneral();
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Save Changes?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
         blueLayout.setVisibility(View.VISIBLE);
         editLayout.setVisibility(View.INVISIBLE);
         World.IS_EDIT_MODE = false;
-        ((MainMenuAllTimeSet) mainListView.getAdapter()).outFromEditMode();
-        ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
-        onClickGeneral();
+
     }
 
     public void onClickMinusNightTemp(View v) {
@@ -273,6 +306,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void onClickEditTimeInterval(View v) {
         editTimeIntervalLayout.setVisibility(View.VISIBLE);
+        editTimeIntervalLayout.setEnabled(true);
         textViewEditStartTime.setText(World.selected_time_interval.getStart().toString());
         textViewEditEndTime.setText(World.selected_time_interval.getEnd().toString());
         helpful = World.selected_time_interval.copy();
@@ -283,6 +317,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void onClickEditTimeIntervalSave(View v) {
         editTimeIntervalLayout.setVisibility(View.INVISIBLE);
+        editTimeIntervalLayout.setEnabled(false);
         mainListView.setEnabled(true);
         editLayout.setEnabled(true);
         onClickGeneral();
@@ -295,7 +330,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickEditTimeIntervalCancel(View v) {
-
         mainListView.setEnabled(true);
         editLayout.setEnabled(true);
         onClickGeneral();
@@ -303,7 +337,8 @@ public class MainActivity extends ActionBarActivity {
         ValueAnimator animator = ObjectAnimator.ofFloat(editTimeIntervalLayout, "alpha", 1f, 0f);
         animator.setDuration(1000);
         animator.start();
-
+        editTimeIntervalLayout.setVisibility(View.INVISIBLE);
+        editTimeIntervalLayout.setEnabled(false);
     }
 
     public void onClickEditTimeIntervalStart(View v) {
@@ -330,8 +365,25 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickDeleteTimeInterval(View v){
-        DialogFragment fragment = new DialogFragment();
-        fragment.show(getSupportFragmentManager(),"agreement of deleting");
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        World.SELECTED_DAY.deleteTimeInterval(World.selected_time_interval);
+                        ((BaseAdapter) World.mainActivity.mainListView.getAdapter()).notifyDataSetChanged();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure want to delete this interval?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
         onClickGeneral();
     }
 }
