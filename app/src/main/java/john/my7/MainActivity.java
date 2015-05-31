@@ -5,10 +5,12 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
     TextView textViewEditStartTime;
     TextView textViewEditEndTime;
 
-    private Temperature goalTemp;
+  //  private Temperature goalTemp;
     private TextView fractionTextView;
     private TextView unitTextView;
     private TextView currentTempTextView;
@@ -90,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
 
         MainMenuAllTimeSet adapter2 = new MainMenuAllTimeSet(this, schedule);
         mainListView.setAdapter(adapter2);
-        goalTemp = new Temperature(schedule.getCurrentGoal());
+        World.currentGoalTemp = new Temperature(schedule.getCurrentGoal());
 
         editNightTempTextView.setText(schedule.getNightTemp().toString());
         editDayTempTextView.setText(schedule.getDayTemp().toString());
@@ -98,9 +100,14 @@ public class MainActivity extends ActionBarActivity {
         popupMessage = new PopupWindow(layoutOfPopup, LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         popupMessage.setContentView(layoutOfPopup);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        adapter2.setDemision(width,height);
     }
-
-
 
     private void initializeFields() {
         fractionTextView = (TextView) findViewById(R.id.temperFraction);
@@ -223,17 +230,17 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickMinus(View v) {
-        goalTemp.decremenTenth();
-        fractionTextView.setText(goalTemp.getFractionString());
-        unitTextView.setText(goalTemp.getUnitString());
+        World.currentGoalTemp.decremenTenth();
+        fractionTextView.setText(World.currentGoalTemp.getFractionString());
+        unitTextView.setText(World.currentGoalTemp.getUnitString());
         checkVisibleOfCurrentTemp();
         isFixed = true;
     }
 
     public void onClickPlus(View v) {
-        goalTemp.incremenTenth();
-        fractionTextView.setText(goalTemp.getFractionString());
-        unitTextView.setText(goalTemp.getUnitString());
+        World.currentGoalTemp.incremenTenth();
+        fractionTextView.setText(World.currentGoalTemp.getFractionString());
+        unitTextView.setText(World.currentGoalTemp.getUnitString());
         checkVisibleOfCurrentTemp();
         isFixed = true;
     }
@@ -306,13 +313,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void onClickGeneral() {
-        goalTemp = schedule.getCurrentGoal();
-        fractionTextView.setText(goalTemp.getFractionString());
-        unitTextView.setText(goalTemp.getUnitString());
+        World.currentGoalTemp= schedule.getCurrentGoal();
+        fractionTextView.setText(World.currentGoalTemp.getFractionString());
+        unitTextView.setText(World.currentGoalTemp.getUnitString());
     }
 
     public void onClickEditTimeInterval(View v) {
-        if (World.SELECTED_DAY.getNumberIntervals()>1) {
             popupMessage.dismiss();
             editTimeIntervalLayout.setVisibility(View.VISIBLE);
             editTimeIntervalLayout.setEnabled(true);
@@ -322,13 +328,6 @@ public class MainActivity extends ActionBarActivity {
             mainListView.setEnabled(false);
             editLayout.setEnabled(false);
             onClickGeneral();
-        }
-        else{
-            World.SELECTED_DAY.firstIsNight = !World.SELECTED_DAY.firstIsNight;
-            ((BaseAdapter) World.mainActivity.mainListView.getAdapter()).notifyDataSetChanged();
-            Toast.makeText(this, "Without intervals you can only change temperature",Toast.LENGTH_LONG).show();
-
-        }
     }
 
     public void onClickEditTimeIntervalSave(View v) {
@@ -382,14 +381,13 @@ public class MainActivity extends ActionBarActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                currentTempTextView.setText("current " + World.CURRENT_TEMPERATURE.toString());
                 if (World.IS_EDIT_MODE == false) {
-                    currentTempTextView.setText("current " + World.CURRENT_TEMPERATURE.toString());
                     if (((MainMenuAllTimeSet) mainListView.getAdapter()).timeTick()) {
                         isFixed = false;
-                        goalTemp = new Temperature(schedule.getCurrentGoal());
-                        unitTextView.setText(goalTemp.getUnitString());
-                        fractionTextView.setText(goalTemp.getFractionString());
-
+                        World.currentGoalTemp = new Temperature(schedule.getCurrentGoal());
+                        unitTextView.setText(World.currentGoalTemp.getUnitString());
+                        fractionTextView.setText(World.currentGoalTemp.getFractionString());
                         if (schedule.getCurrentGoal().compareTo(schedule.getDayTemp()) == 0) {
                             switcher.setChecked(true);
                         } else switcher.setChecked(false);
@@ -438,7 +436,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void checkVisibleOfCurrentTemp(){
-        if (World.CURRENT_TEMPERATURE.compareTo(schedule.getCurrentGoal()) == 0) {
+        if (World.CURRENT_TEMPERATURE.compareTo(World.currentGoalTemp) == 0) {
             currentTempTextView.setVisibility(View.INVISIBLE);
         } else {
             currentTempTextView.setVisibility(View.VISIBLE);
@@ -448,16 +446,13 @@ public class MainActivity extends ActionBarActivity {
     public void onClickSwitch(View v){
         if (!World.IS_EDIT_MODE) {
             isFixed = true;
-            System.out.println("Onclick switch");
             if (switcher.isChecked()) {
-                goalTemp.setTemp(schedule.getDayTemp());
-                System.out.println("checked" + goalTemp.toString());
+                World.currentGoalTemp.setTemp(schedule.getDayTemp());
             } else {
-                goalTemp.setTemp(schedule.getNightTemp());
-                System.out.println("not checked " + goalTemp.toString() + "night temp " + schedule.getNightTemp().toString());
+                World.currentGoalTemp.setTemp(schedule.getNightTemp());
             }
-            unitTextView.setText(goalTemp.getUnitString());
-            fractionTextView.setText(goalTemp.getFractionString());
+            unitTextView.setText(World.currentGoalTemp.getUnitString());
+            fractionTextView.setText(World.currentGoalTemp.getFractionString());
             checkVisibleOfCurrentTemp();
         }
     }
