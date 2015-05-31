@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/edit_delete_popup_layout_it">
+
+    <ImageButton
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:id="@+id/imageButtonEdit"
+        android:background="@drawable/edit"
+        android:onClick="onClickEditTimeInterval" />
+
+    <ImageButton
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:id="@+id/imageButtonDelete"
+        android:layout_alignBottom="@+id/imageButtonEdit"
+        android:layout_toRightOf="@+id/imageButtonEdit"
+        android:layout_toEndOf="@+id/imageButtonEdit"
+        android:background="@drawable/delete"
+        android:onClick="onClickDeleteTimeInterval"/>
+
+</LinearLayout>

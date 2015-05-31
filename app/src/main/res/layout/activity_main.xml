@@ -283,24 +283,6 @@
             android:scrollingCache="true"
             android:choiceMode="singleChoice"
             android:clickable="true" />
-    <ImageButton
-        android:layout_width="@android:dimen/app_icon_size"
-        android:layout_height="@android:dimen/app_icon_size"
-        android:id="@+id/imageButtonEdit"
-        android:background="@drawable/edit"
-        android:visibility="invisible"
-        android:onClick="onClickEditTimeInterval" />
-
-    <ImageButton
-        android:layout_width="@android:dimen/app_icon_size"
-        android:layout_height="@android:dimen/app_icon_size"
-        android:id="@+id/imageButtonDelete"
-        android:layout_alignBottom="@+id/imageButtonEdit"
-        android:layout_toRightOf="@+id/imageButtonEdit"
-        android:layout_toEndOf="@+id/imageButtonEdit"
-        android:background="@drawable/delete"
-        android:visibility="invisible"
-        android:onClick="onClickDeleteTimeInterval"/>
 
     <RelativeLayout
         android:layout_width="@dimen/edit_time_layout_size"

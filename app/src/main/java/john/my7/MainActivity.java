@@ -9,14 +9,18 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -51,8 +55,11 @@ public class MainActivity extends ActionBarActivity {
     private ImageButton bigMinus;
     private ImageButton calendarButton;
 
+    PopupWindow popupMessage;
+
     boolean wasPaused;
     boolean isFixed;
+    LinearLayout layoutOfPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +93,13 @@ public class MainActivity extends ActionBarActivity {
 
         editNightTempTextView.setText(schedule.getNightTemp().toString());
         editDayTempTextView.setText(schedule.getDayTemp().toString());
+
+        popupMessage = new PopupWindow(layoutOfPopup, LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupMessage.setContentView(layoutOfPopup);
     }
+
+
 
     private void initializeFields() {
         fractionTextView = (TextView) findViewById(R.id.temperFraction);
@@ -102,13 +115,17 @@ public class MainActivity extends ActionBarActivity {
         textViewEditStartTime = (TextView) findViewById(R.id.textViewEditStartTime);
         mainListView = (ListView) findViewById(R.id.MainScreeAllDays);
         editNightTempTextView = (TextView) findViewById(R.id.textViewEditNightTemp);
-        World.editImageButton = (ImageButton) findViewById(R.id.imageButtonEdit);
-        World.deleteImageButton = (ImageButton) findViewById(R.id.imageButtonDelete);
         editDayTempTextView = (TextView) findViewById(R.id.textViewEditDayTemp);
         switcher = (Switch) findViewById(R.id.switchDayNight);
         calendarButton = (ImageButton) findViewById(R.id.calendarButton);
         bigPlus = (ImageButton) findViewById(R.id.imagePlusView);
         bigMinus = (ImageButton) findViewById(R.id.imageMinusView);
+
+
+        LayoutInflater inflater = (LayoutInflater) MainActivity.this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutOfPopup = (LinearLayout) inflater.inflate(R.layout.edit_delete_popup_layout,
+                (ViewGroup) findViewById(R.id.edit_delete_popup_layout_it));
     }
 
     @Override
@@ -288,14 +305,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void onClickGeneral() {
-        World.deleteImageButton.setVisibility(View.INVISIBLE);
-        World.editImageButton.setVisibility(View.INVISIBLE);
         goalTemp = schedule.getCurrentGoal();
         fractionTextView.setText(goalTemp.getFractionString());
         unitTextView.setText(goalTemp.getUnitString());
     }
 
     public void onClickEditTimeInterval(View v) {
+        popupMessage.dismiss();
         editTimeIntervalLayout.setVisibility(View.VISIBLE);
         editTimeIntervalLayout.setEnabled(true);
         textViewEditStartTime.setText(World.selected_time_interval.getStart().toString());
@@ -376,6 +392,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickDeleteTimeInterval(View v){
+        popupMessage.dismiss();
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -431,4 +448,12 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public void openPopupEditDelete(TimeTable.Day day, int position, View rowView) {
+        System.out.println("open popup");
+        if (popupMessage.isShowing()){
+            popupMessage.dismiss();
+        }
+        popupMessage.showAsDropDown(rowView, rowView.getWidth()/2, -15);
+        popupMessage.setOutsideTouchable(false);
+    }
 }

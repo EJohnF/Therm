@@ -1,7 +1,5 @@
 package john.my7;
 
-import android.widget.ImageButton;
-
 /**
  * Created by John on 20.05.2015.
  */
@@ -80,8 +78,4 @@ public class World {
         });
         ticker.start();
     }
-
-    //temporary//
-    public static ImageButton editImageButton;
-    public static ImageButton deleteImageButton;
 }

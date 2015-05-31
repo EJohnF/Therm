@@ -46,7 +46,7 @@ public class MainMenuOneTimesSet extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.row_layout, parent, false);
@@ -83,27 +83,27 @@ public class MainMenuOneTimesSet extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     if (isEditMode) {
-                        System.out.println("on click an row in if");
                         World.SELECTED_DAY = day;
-                        int[] locat = new int[2];
-                        v.getLocationOnScreen(locat);
-                        locat[0] += v.getWidth() / 2;
-                        locat[1] -= v.getHeight() / 2;
-                        int height = World.editImageButton.getHeight();
-                        int width = World.editImageButton.getWidth();
-                        int padding = 5;
-                        World.editImageButton.setBottom(locat[1]);
-                        World.editImageButton.setLeft(locat[0]);
-                        World.editImageButton.setTop(locat[1] - height);
-                        World.editImageButton.setRight(locat[0] + width);
-                        World.editImageButton.setVisibility(View.VISIBLE);
-
-                        World.deleteImageButton.setBottom(locat[1]);
-                        World.deleteImageButton.setLeft(locat[0] + width);
-                        World.deleteImageButton.setTop(locat[1] - height);
-                        World.deleteImageButton.setRight(locat[0] + width * 2 + padding);
-                        World.deleteImageButton.setVisibility(View.VISIBLE);
                         World.selected_time_interval = timeInterval;
+                        World.mainActivity.openPopupEditDelete(day, position, rowView);
+//                        int[] locat = new int[2];
+//                        v.getLocationOnScreen(locat);
+//                        locat[0] += v.getWidth() / 2;
+//                        locat[1] -= v.getHeight() / 2;
+//                        int height = World.editImageButton.getHeight();
+//                        int width = World.editImageButton.getWidth();
+//                        int padding = 5;
+//                        World.editImageButton.setBottom(locat[1]);
+//                        World.editImageButton.setLeft(locat[0]);
+//                        World.editImageButton.setTop(locat[1] - height);
+//                        World.editImageButton.setRight(locat[0] + width);
+//                        World.editImageButton.setVisibility(View.VISIBLE);
+//
+//                        World.deleteImageButton.setBottom(locat[1]);
+//                        World.deleteImageButton.setLeft(locat[0] + width);
+//                        World.deleteImageButton.setTop(locat[1] - height);
+//                        World.deleteImageButton.setRight(locat[0] + width * 2 + padding);
+//                        World.deleteImageButton.setVisibility(View.VISIBLE);
                     }
                 }
             });
