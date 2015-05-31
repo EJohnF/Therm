@@ -13,13 +13,16 @@ public class vacation_mode extends ActionBarActivity {
     TextView textUnit;
     TextView textFraction;
     TextView textCurrent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_mode);
-        textCurrent = (TextView)findViewById(R.id.textViewCurrTemp);
-        textFraction = (TextView)findViewById(R.id.temperFraction);
+        textCurrent = (TextView) findViewById(R.id.textViewCurrTemp);
+        textFraction = (TextView) findViewById(R.id.temperFraction);
         textUnit = (TextView) findViewById(R.id.temperUnit);
+        World.vacationMode = this;
+        refreshTemps();
     }
 
     @Override
@@ -54,13 +57,34 @@ public class vacation_mode extends ActionBarActivity {
         refreshTemps();
     }
 
-    public void refreshTemps(){
+    public void refreshTemps() {
         textCurrent.setText("current " + World.CURRENT_TEMPERATURE.toString());
         textUnit.setText(World.vacation_goal_temp.getUnitString());
         textFraction.setText(World.vacation_goal_temp.getFractionString());
+        setVisibilityCurrent();
 
     }
+
     public void onClickBack(View view) {
+        World.isVacation = false;
         finish();
+    }
+
+    public void refreshTime() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                textCurrent.setText("current " + World.CURRENT_TEMPERATURE.toString());
+                setVisibilityCurrent();
+            }
+        });
+    }
+
+    private void setVisibilityCurrent() {
+        if (World.CURRENT_TEMPERATURE.compareTo(World.vacation_goal_temp) == 0) {
+            textCurrent.setVisibility(View.INVISIBLE);
+        } else {
+            textCurrent.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -52,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
     private ImageButton calendarButton;
 
     boolean wasPaused;
+    boolean isFixed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +182,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -209,6 +209,7 @@ public class MainActivity extends ActionBarActivity {
         fractionTextView.setText(goalTemp.getFractionString());
         unitTextView.setText(goalTemp.getUnitString());
         checkVisibleOfCurrentTemp();
+        isFixed = true;
     }
 
     public void onClickPlus(View v) {
@@ -216,6 +217,7 @@ public class MainActivity extends ActionBarActivity {
         fractionTextView.setText(goalTemp.getFractionString());
         unitTextView.setText(goalTemp.getUnitString());
         checkVisibleOfCurrentTemp();
+        isFixed = true;
     }
 
     public void onClickCalendar(View v) {
@@ -355,20 +357,20 @@ public class MainActivity extends ActionBarActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                currentTempTextView.setText("current " + World.CURRENT_TEMPERATURE.toString());
-                System.out.println("night temp: " + schedule.getNightTemp() + " time: " +World.CURRENT_TIME.toString());
-                if (((MainMenuAllTimeSet) mainListView.getAdapter()).timeTick()){
+                if (World.IS_EDIT_MODE == false) {
+                    currentTempTextView.setText("current " + World.CURRENT_TEMPERATURE.toString());
+                    if (((MainMenuAllTimeSet) mainListView.getAdapter()).timeTick()) {
+                        isFixed = false;
+                        goalTemp = new Temperature(schedule.getCurrentGoal());
+                        unitTextView.setText(goalTemp.getUnitString());
+                        fractionTextView.setText(goalTemp.getFractionString());
 
-                    goalTemp.setTemp(schedule.getCurrentGoal());
-                    unitTextView.setText(goalTemp.getUnitString());
-                    fractionTextView.setText(goalTemp.getFractionString());
-
-                    if (schedule.getCurrentGoal().compareTo(schedule.getDayTemp()) == 0){
-                        switcher.setChecked(true);
+                        if (schedule.getCurrentGoal().compareTo(schedule.getDayTemp()) == 0) {
+                            switcher.setChecked(true);
+                        } else switcher.setChecked(false);
                     }
-                    else switcher.setChecked(false);
+                    checkVisibleOfCurrentTemp();
                 }
-                checkVisibleOfCurrentTemp();
             }
         });
     }
@@ -397,9 +399,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickPlane(View view) {
-        Intent intent = new Intent(this, vacation_mode.class);
-        startActivity(intent);
-
+        if (!World.IS_EDIT_MODE) {
+            World.isVacation = true;
+            Intent intent = new Intent(this, vacation_mode.class);
+            startActivity(intent);
+        }
     }
 
     public void checkVisibleOfCurrentTemp(){
@@ -411,17 +415,20 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickSwitch(View v){
-        switcher.setChecked(!switcher.isChecked());
-        System.out.println("Onclick switch");
-        if (switcher.isChecked()){
-            goalTemp.setTemp(schedule.getDayTemp());
-            System.out.println("checked" + goalTemp.toString());
+        if (!World.IS_EDIT_MODE) {
+            isFixed = true;
+            System.out.println("Onclick switch");
+            if (switcher.isChecked()) {
+                goalTemp.setTemp(schedule.getDayTemp());
+                System.out.println("checked" + goalTemp.toString());
+            } else {
+                goalTemp.setTemp(schedule.getNightTemp());
+                System.out.println("not checked " + goalTemp.toString() + "night temp " + schedule.getNightTemp().toString());
+            }
+            unitTextView.setText(goalTemp.getUnitString());
+            fractionTextView.setText(goalTemp.getFractionString());
+            checkVisibleOfCurrentTemp();
         }
-        else{
-            goalTemp.setTemp(schedule.getNightTemp());
-            System.out.println("not checked " + goalTemp.toString() + "night temp " + schedule.getNightTemp().toString());
-        }
-        unitTextView.setText(goalTemp.getUnitString());
-        fractionTextView.setText(goalTemp.getFractionString());
     }
+
 }
