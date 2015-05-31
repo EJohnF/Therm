@@ -10,8 +10,8 @@
         android:id="@+id/BluePartScreen"
         android:visibility="invisible">
         <ImageButton
-            android:layout_width="@android:dimen/app_icon_size"
-            android:layout_height="@android:dimen/app_icon_size"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
             android:id="@+id/calendarButton"
             android:layout_alignParentTop="true"
             android:background="@drawable/edit1"
@@ -22,8 +22,8 @@
             android:layout_margin="10dp"
             android:onClick="onClickCalendar" />
         <ImageButton
-            android:layout_width="@android:dimen/app_icon_size"
-            android:layout_height="@android:dimen/app_icon_size"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
             android:id="@+id/vacationModeButton"
             android:layout_alignParentTop="true"
             android:background="@drawable/plane"
@@ -103,8 +103,8 @@
             android:layout_marginRight="5dp" />
 
         <ImageButton
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:id="@+id/imageMinusView"
             android:background="@drawable/minus"
             android:layout_alignTop="@+id/temperFraction"
@@ -113,8 +113,8 @@
             android:layout_toLeftOf="@+id/temperUnit"
             android:layout_marginRight="10dp" />
         <ImageButton
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:id="@+id/imagePlusView"
             android:background="@drawable/plus"
             android:clickable="true"
@@ -148,8 +148,8 @@
 
 
         <ImageButton
-            android:layout_width="@android:dimen/app_icon_size"
-            android:layout_height="@android:dimen/app_icon_size"
+            android:layout_width="42dp"
+            android:layout_height="35dp"
             android:id="@+id/imageButton2"
             android:background="@drawable/ok"
             android:layout_alignParentTop="true"
