@@ -244,7 +244,7 @@ public class MainActivity extends ActionBarActivity {
         World.IS_EDIT_MODE = true;
         ((MainMenuAllTimeSet) mainListView.getAdapter()).enterToEditMode();
         ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
-        schedule.saveData(this, "tempFotUndo");
+        schedule.saveData(this, "tempForUndo");
     }
 
     public void onClickOk(View v) {
@@ -264,7 +264,7 @@ public class MainActivity extends ActionBarActivity {
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
-                        //schedule.changeFromFile(context, "tempForUndo");
+                        schedule.changeFromFile(context, "tempForUndo");
                         ((MainMenuAllTimeSet) mainListView.getAdapter()).outFromEditMode();
                         ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
                         onClickGeneral();
