@@ -59,8 +59,6 @@ public class MainMenuAllTimeSet extends BaseAdapter {
         /*TODO вот это число 80  надо как-то пересчитывать в зависимости от размеров экрана
          например  потмоу что на планшете 80 - это много
         */
-        System.out.println("height row: " + rowView.getHeight());
-        //lp.height =  82*scale;
         lp.height = ((int)World.mainActivity.getResources().getDimension(R.dimen.row_height)) * scale;
         listView.setLayoutParams(lp);
 //        ListView.LayoutParams normalParams = new ListView.LayoutParams(parent.getWidth(), 60*timeTable.getDay(cur).getNumberIntervals());
@@ -72,7 +70,6 @@ public class MainMenuAllTimeSet extends BaseAdapter {
 
             }
         });
-        System.out.println("heightlist: " + listView.getHeight());
         String s = "";
         if (position ==0){
             s+="Today:";

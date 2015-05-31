@@ -22,6 +22,7 @@ public class vacation_mode extends ActionBarActivity {
         textFraction = (TextView) findViewById(R.id.temperFraction);
         textUnit = (TextView) findViewById(R.id.temperUnit);
         World.vacationMode = this;
+        World.currentGoalTemp.setTemp(World.vacation_goal_temp);
         refreshTemps();
     }
 
@@ -61,6 +62,7 @@ public class vacation_mode extends ActionBarActivity {
         textCurrent.setText("current " + World.CURRENT_TEMPERATURE.toString());
         textUnit.setText(World.vacation_goal_temp.getUnitString());
         textFraction.setText(World.vacation_goal_temp.getFractionString());
+        World.currentGoalTemp.setTemp(World.vacation_goal_temp);
         setVisibilityCurrent();
 
     }

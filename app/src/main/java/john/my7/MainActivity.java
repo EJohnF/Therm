@@ -100,13 +100,6 @@ public class MainActivity extends ActionBarActivity {
         popupMessage = new PopupWindow(layoutOfPopup, LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         popupMessage.setContentView(layoutOfPopup);
-
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-        adapter2.setDemision(width,height);
     }
 
     private void initializeFields() {

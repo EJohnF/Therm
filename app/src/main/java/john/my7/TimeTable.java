@@ -49,7 +49,7 @@ public class TimeTable  implements Serializable {
 
         public Day(String s) {
             name = s;
-            intervals = new ArrayList<>();
+            intervals = new ArrayList<TimeInterval>();
         }
 
         public Day(String s, int number) {
@@ -255,7 +255,9 @@ public class TimeTable  implements Serializable {
             this.night = upload.night;
             is.close();
             fis.close();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
