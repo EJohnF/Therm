@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by John on 17.05.2015.
@@ -77,6 +78,7 @@ public class MainMenuOneTimesSet extends BaseAdapter {
             });
         }
         else {
+
             final TimeInterval timeInterval = day.getTimeInterval(position);
             textView.setText(day.getStringInterval(position));
             rowView.setOnClickListener(new View.OnClickListener() {
@@ -85,25 +87,14 @@ public class MainMenuOneTimesSet extends BaseAdapter {
                     if (isEditMode) {
                         World.SELECTED_DAY = day;
                         World.selected_time_interval = timeInterval;
-                        World.mainActivity.openPopupEditDelete(day, position, rowView);
-//                        int[] locat = new int[2];
-//                        v.getLocationOnScreen(locat);
-//                        locat[0] += v.getWidth() / 2;
-//                        locat[1] -= v.getHeight() / 2;
-//                        int height = World.editImageButton.getHeight();
-//                        int width = World.editImageButton.getWidth();
-//                        int padding = 5;
-//                        World.editImageButton.setBottom(locat[1]);
-//                        World.editImageButton.setLeft(locat[0]);
-//                        World.editImageButton.setTop(locat[1] - height);
-//                        World.editImageButton.setRight(locat[0] + width);
-//                        World.editImageButton.setVisibility(View.VISIBLE);
-//
-//                        World.deleteImageButton.setBottom(locat[1]);
-//                        World.deleteImageButton.setLeft(locat[0] + width);
-//                        World.deleteImageButton.setTop(locat[1] - height);
-//                        World.deleteImageButton.setRight(locat[0] + width * 2 + padding);
-//                        World.deleteImageButton.setVisibility(View.VISIBLE);
+                        if (day.getNumberIntervals() == 1) {
+                            World.SELECTED_DAY.firstIsNight = !World.SELECTED_DAY.firstIsNight;
+                            ((BaseAdapter) World.mainActivity.mainListView.getAdapter()).notifyDataSetChanged();
+                            Toast.makeText(World.mainActivity, "Without intervals you can only change temperature type", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            World.mainActivity.openPopupEditDelete(day, position, rowView);
+                        }
                     }
                 }
             });

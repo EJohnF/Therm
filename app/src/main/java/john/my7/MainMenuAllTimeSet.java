@@ -17,6 +17,7 @@ public class MainMenuAllTimeSet extends BaseAdapter {
     Context context;
     TimeTable timeTable;
     boolean isEditMode;
+    int width, height;
 
     public MainMenuAllTimeSet(Context context, TimeTable table){
         this.context = context;
@@ -58,7 +59,9 @@ public class MainMenuAllTimeSet extends BaseAdapter {
         /*TODO вот это число 80  надо как-то пересчитывать в зависимости от размеров экрана
          например  потмоу что на планшете 80 - это много
         */
-        lp.height = 82*scale;
+        System.out.println("height row: " + rowView.getHeight());
+        //lp.height =  82*scale;
+        lp.height = ((int)World.mainActivity.getResources().getDimension(R.dimen.row_height)) * scale;
         listView.setLayoutParams(lp);
 //        ListView.LayoutParams normalParams = new ListView.LayoutParams(parent.getWidth(), 60*timeTable.getDay(cur).getNumberIntervals());
 //        listView.setLayoutParams(normalParams);
@@ -69,6 +72,7 @@ public class MainMenuAllTimeSet extends BaseAdapter {
 
             }
         });
+        System.out.println("heightlist: " + listView.getHeight());
         String s = "";
         if (position ==0){
             s+="Today:";
@@ -114,5 +118,10 @@ public class MainMenuAllTimeSet extends BaseAdapter {
             notifyDataSetChanged();
         }
         return res;
+    }
+
+    public void setDemision(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 }

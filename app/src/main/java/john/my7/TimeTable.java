@@ -199,12 +199,9 @@ public class TimeTable  implements Serializable {
             days[i].firstIsNight = true;
         }
         days[0].addInterval(new TimeInterval(2, 0, 4, 0));
-        days[0].addInterval(new TimeInterval(4, 0, 6, 15));
-        days[0].addInterval(new TimeInterval(6, 15, 13, 15));
 
         days[1].addInterval(new TimeInterval(0, 0, 6, 0));
-        days[1].addInterval(new TimeInterval(6, 0, 8, 0));
-        days[1].addInterval(new TimeInterval(8, 0, 12, 15));
+
         days[1].addInterval(new TimeInterval(12, 15, 13, 15));
         days[6].addInterval(new TimeInterval(4, 0, 6, 15));
         try {

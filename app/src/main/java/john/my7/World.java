@@ -17,6 +17,7 @@ public class World {
     public static vacation_mode vacationMode;
     public static boolean isVacation = false;
     public static Temperature vacation_goal_temp = new Temperature(22, 5);
+    public static Temperature currentGoalTemp = new Temperature(0,0);
 
     public static void setSetting() {
         android.text.format.Time today = new android.text.format.Time(android.text.format.Time.getCurrentTimezone());
@@ -33,7 +34,7 @@ public class World {
             @Override
             public void run() {
                 Time zeroTime = new Time(0, 0);
-                Temperature goalTemp = new Temperature(0,0);
+
                 int i = 9;
                 while (true) {
                     try {
@@ -57,18 +58,10 @@ public class World {
                                 mainActivity.refreshTime();
                         }
                     }
-                    if (isVacation) {
-                        goalTemp.setTemp(vacation_goal_temp);
-                    }
-                    else {
-                        if (mainActivity != null) {
-                            goalTemp.setTemp(mainActivity.schedule.getCurrentGoal());
-                        }
-                    }
-                    if (CURRENT_TEMPERATURE.compareTo(goalTemp) > 0) {
+                    if (CURRENT_TEMPERATURE.compareTo(currentGoalTemp) > 0) {
                         if (i % 4 == 0)
                             CURRENT_TEMPERATURE.decremenTenth();
-                    } else if (CURRENT_TEMPERATURE.compareTo(goalTemp) < 0) {
+                    } else if (CURRENT_TEMPERATURE.compareTo(currentGoalTemp) < 0) {
                         if (i % 8 == 0)
                             CURRENT_TEMPERATURE.incremenTenth();
                     }
