@@ -29,7 +29,6 @@ public class MainActivity extends ActionBarActivity {
     TextView textViewEditStartTime;
     TextView textViewEditEndTime;
 
-    private Temperature currentTemp;
     private Temperature goalTemp;
     private TextView fractionTextView;
     private TextView unitTextView;
@@ -58,14 +57,17 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        World.setSetting();
+
         initializeFields();
         setInitialSettings();
-
-        World.startTime();
         onClickGeneral();
         wasPaused = true;
         createAnimation();
         World.mainActivity = this;
+
+        World.startTime();
     }
 
     private void setInitialSettings() {
@@ -79,8 +81,7 @@ public class MainActivity extends ActionBarActivity {
 
         MainMenuAllTimeSet adapter2 = new MainMenuAllTimeSet(this, schedule);
         mainListView.setAdapter(adapter2);
-        currentTemp = new Temperature(21, 3);
-        goalTemp = new Temperature(21, 3);
+        goalTemp = new Temperature(schedule.getCurrentGoal());
 
         editNightTempTextView.setText(schedule.getNightTemp().toString());
         editDayTempTextView.setText(schedule.getDayTemp().toString());
@@ -207,22 +208,14 @@ public class MainActivity extends ActionBarActivity {
         goalTemp.decremenTenth();
         fractionTextView.setText(goalTemp.getFractionString());
         unitTextView.setText(goalTemp.getUnitString());
-        checkForChangeBlueSize();
+        checkVisibleOfCurrentTemp();
     }
 
     public void onClickPlus(View v) {
         goalTemp.incremenTenth();
         fractionTextView.setText(goalTemp.getFractionString());
         unitTextView.setText(goalTemp.getUnitString());
-        checkForChangeBlueSize();
-    }
-
-    private void checkForChangeBlueSize() {
-        if (currentTemp.compareTo(goalTemp) == 0) {
-            currentTempTextView.setVisibility(View.INVISIBLE);
-        } else {
-            currentTempTextView.setVisibility(View.VISIBLE);
-        }
+        checkVisibleOfCurrentTemp();
     }
 
     public void onClickCalendar(View v) {
@@ -271,7 +264,6 @@ public class MainActivity extends ActionBarActivity {
     public void onClickMinusNightTemp(View v) {
         schedule.getNightTemp().decremenTenth();
         editNightTempTextView.setText(schedule.getNightTemp().toString());
-        System.out.println("night temp: " + schedule.getNightTemp().toString());
         onClickGeneral();
     }
 
@@ -297,11 +289,8 @@ public class MainActivity extends ActionBarActivity {
         World.deleteImageButton.setVisibility(View.INVISIBLE);
         World.editImageButton.setVisibility(View.INVISIBLE);
         goalTemp = schedule.getCurrentGoal();
-        System.out.println("!!!current goal temp: " + goalTemp.toString());
-        System.out.println("!!!current night temp: " + schedule.getNightTemp().toString());
         fractionTextView.setText(goalTemp.getFractionString());
         unitTextView.setText(goalTemp.getUnitString());
-        checkForChangeBlueSize();
     }
 
     public void onClickEditTimeInterval(View v) {
@@ -366,11 +355,20 @@ public class MainActivity extends ActionBarActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                currentTempTextView.setText("current "+ World.CURRENT_TEMPERATURE.toString());
-                Temperature t = schedule.getCurrentGoal();
-                unitTextView.setText(t.getUnitString());
-                fractionTextView.setText(t.getFractionString());
-                ((MainMenuAllTimeSet) mainListView.getAdapter()).timeTick();
+                currentTempTextView.setText("current " + World.CURRENT_TEMPERATURE.toString());
+                System.out.println("night temp: " + schedule.getNightTemp() + " time: " +World.CURRENT_TIME.toString());
+                if (((MainMenuAllTimeSet) mainListView.getAdapter()).timeTick()){
+
+                    goalTemp.setTemp(schedule.getCurrentGoal());
+                    unitTextView.setText(goalTemp.getUnitString());
+                    fractionTextView.setText(goalTemp.getFractionString());
+
+                    if (schedule.getCurrentGoal().compareTo(schedule.getDayTemp()) == 0){
+                        switcher.setChecked(true);
+                    }
+                    else switcher.setChecked(false);
+                }
+                checkVisibleOfCurrentTemp();
             }
         });
     }
@@ -402,5 +400,28 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, vacation_mode.class);
         startActivity(intent);
 
+    }
+
+    public void checkVisibleOfCurrentTemp(){
+        if (World.CURRENT_TEMPERATURE.compareTo(schedule.getCurrentGoal()) == 0) {
+            currentTempTextView.setVisibility(View.INVISIBLE);
+        } else {
+            currentTempTextView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void onClickSwitch(View v){
+        switcher.setChecked(!switcher.isChecked());
+        System.out.println("Onclick switch");
+        if (switcher.isChecked()){
+            goalTemp.setTemp(schedule.getDayTemp());
+            System.out.println("checked" + goalTemp.toString());
+        }
+        else{
+            goalTemp.setTemp(schedule.getNightTemp());
+            System.out.println("not checked " + goalTemp.toString() + "night temp " + schedule.getNightTemp().toString());
+        }
+        unitTextView.setText(goalTemp.getUnitString());
+        fractionTextView.setText(goalTemp.getFractionString());
     }
 }

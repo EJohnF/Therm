@@ -95,15 +95,24 @@ public class MainMenuAllTimeSet extends BaseAdapter {
     }
     int lastPosition = 0;
     int lastDay = World.CURRENT_DAY;
-    public void timeTick() {
+
+    /**
+     *
+     * @return if was change time interval
+     */
+    public boolean timeTick() {
+        boolean res = false;
         int pos = timeTable.getDay(World.CURRENT_DAY).getPositionByTime(World.CURRENT_TIME);
         if (pos != lastPosition){
             lastPosition = pos;
-            System.out.println("Change timeInterval");
             notifyDataSetChanged();
+            res = true;
         }
         if (lastDay != World.CURRENT_DAY){
+            lastDay = World.CURRENT_DAY;
+            res = true;
             notifyDataSetChanged();
         }
+        return res;
     }
 }

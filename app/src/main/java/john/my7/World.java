@@ -17,38 +17,44 @@ public class World {
     public static TimeTable.Day SELECTED_DAY;
     public static MainActivity mainActivity;
     public static Temperature vacation_goal_temp = new Temperature(22,5);
+    public static void setSetting(){
+        android.text.format.Time today = new android.text.format.Time(android.text.format.Time.getCurrentTimezone());
+        today.setToNow();
+        if (today.weekDay == 0)
+            CURRENT_DAY = 6;
+        else CURRENT_DAY = today.weekDay-1;
+        CURRENT_TIME = new Time(today.hour,today.minute);
+        System.out.println("CURRENT TIME: "+CURRENT_TIME.toString());
+    }
     public static void startTime(){
         Thread ticker = new Thread(new Runnable() {
             @Override
             public void run() {
                 Time zeroTime = new Time(0,0);
+                int i = 9;
                 while (true) {
                     try {
                         //NOW 1min in app = 1 sec in real
-                        Thread.sleep(1500);
+                        Thread.sleep(20);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    for (int i = 0; i<21;i++) {
-                        CURRENT_TIME.tick();
-                        if (CURRENT_TIME.compareTo(zeroTime) == 0){
-                            CURRENT_DAY = (CURRENT_DAY+1)%7;
-                            mainActivity.refreshTime();
-                            System.out.println("Change day to "+ CURRENT_DAY);
+                    CURRENT_TIME.tick();
+                    i++;
+                    if (i % 10 == 0) {
+                        if (CURRENT_TIME.compareTo(zeroTime) == 0) {
+                            CURRENT_DAY = (CURRENT_DAY + 1) % 7;
                         }
-                        System.out.println("current " + CURRENT_TEMPERATURE.toString() + " goal " + mainActivity.schedule.getCurrentGoal());
-                        if (CURRENT_TEMPERATURE.compareTo(mainActivity.schedule.getCurrentGoal()) > 0){
-                            if (i%5 == 0)
-                                System.out.println("decrement");
-                                CURRENT_TEMPERATURE.decremenTenth();
-                        }
-                        else if (CURRENT_TEMPERATURE.compareTo(mainActivity.schedule.getCurrentGoal()) < 0){
-                            if (i%10 == 0)
-                                System.out.println("increment");
-                            CURRENT_TEMPERATURE.incremenTenth();
-                        }
+                        mainActivity.refreshTime();
                     }
-                    mainActivity.refreshTime();
+                    if (CURRENT_TEMPERATURE.compareTo(mainActivity.schedule.getCurrentGoal()) > 0) {
+                        if (i % 10 == 0)
+                            CURRENT_TEMPERATURE.decremenTenth();
+                    } else if (CURRENT_TEMPERATURE.compareTo(mainActivity.schedule.getCurrentGoal()) < 0) {
+                        if (i % 20 == 0)
+                            CURRENT_TEMPERATURE.incremenTenth();
+                    }
+                    i%=10001;
                 }
             }
         });

@@ -29,8 +29,7 @@ public class TimeTable  implements Serializable {
     }
 
     public void setDayTemp(Temperature day) {
-        this.day.setFraction(day.getFraction());
-        this.day.setUnit(day.getUnit());
+        this.day = new Temperature(day.getUnit(),day.getFraction());
     }
 
     public Temperature getNightTemp() {
@@ -38,8 +37,8 @@ public class TimeTable  implements Serializable {
     }
 
     public void setNightTemp(Temperature night) {
-        this.night.setFraction(night.getFraction());
-        this.night.setFraction(night.getUnit());
+        System.out.println("change night temp to " + night.toString());
+        this.night = new Temperature(night.getUnit(),night.getFraction());
     }
 
     public class Day implements Serializable{
@@ -187,7 +186,12 @@ public class TimeTable  implements Serializable {
         this(context,fileName);
     }
 
+    public TimeTable(){
+        day = new Temperature(10,0);
+        night = new Temperature(25,0);
+    }
     public TimeTable(Context context, String fileName) {
+        this();
         days = new Day[7];
         for (int i = 0; i < 7; i++) {
             days[i] = new Day(dayName[i], i);
@@ -202,6 +206,7 @@ public class TimeTable  implements Serializable {
         days[1].addInterval(new TimeInterval(6, 0, 8, 0));
         days[1].addInterval(new TimeInterval(8, 0, 12, 15));
         days[1].addInterval(new TimeInterval(12, 15, 13, 15));
+        days[6].addInterval(new TimeInterval(4, 0, 6, 15));
         try {
             FileInputStream fis = context.openFileInput(fileName);
             ObjectInputStream is = new ObjectInputStream(fis);

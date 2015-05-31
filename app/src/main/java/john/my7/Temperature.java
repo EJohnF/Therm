@@ -12,6 +12,12 @@ public class Temperature implements Comparable<Temperature>, Serializable{
         this.unit = unit;
         this.fraction = fraction;
     }
+
+    public Temperature(Temperature temperature) {
+        unit = temperature.unit;
+        fraction = temperature.fraction;
+    }
+
     public int getUnit() {
         return unit;
     }
@@ -75,5 +81,10 @@ public class Temperature implements Comparable<Temperature>, Serializable{
             else return 0;
         }
         else return -1;
+    }
+
+    public void setTemp(Temperature temp) {
+        unit = temp.unit;
+        fraction = temp.fraction;
     }
 }
