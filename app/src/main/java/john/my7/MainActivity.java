@@ -24,6 +24,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eftimoff.androidplayer.Player;
 import com.eftimoff.androidplayer.actions.property.PropertyAction;
@@ -311,15 +312,23 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickEditTimeInterval(View v) {
-        popupMessage.dismiss();
-        editTimeIntervalLayout.setVisibility(View.VISIBLE);
-        editTimeIntervalLayout.setEnabled(true);
-        textViewEditStartTime.setText(World.selected_time_interval.getStart().toString());
-        textViewEditEndTime.setText(World.selected_time_interval.getEnd().toString());
-        helpful = World.selected_time_interval.copy();
-        mainListView.setEnabled(false);
-        editLayout.setEnabled(false);
-        onClickGeneral();
+        if (World.SELECTED_DAY.getNumberIntervals()>1) {
+            popupMessage.dismiss();
+            editTimeIntervalLayout.setVisibility(View.VISIBLE);
+            editTimeIntervalLayout.setEnabled(true);
+            textViewEditStartTime.setText(World.selected_time_interval.getStart().toString());
+            textViewEditEndTime.setText(World.selected_time_interval.getEnd().toString());
+            helpful = World.selected_time_interval.copy();
+            mainListView.setEnabled(false);
+            editLayout.setEnabled(false);
+            onClickGeneral();
+        }
+        else{
+            World.SELECTED_DAY.firstIsNight = !World.SELECTED_DAY.firstIsNight;
+            ((BaseAdapter) World.mainActivity.mainListView.getAdapter()).notifyDataSetChanged();
+            Toast.makeText(this, "Without intervals you can only change temperature",Toast.LENGTH_LONG).show();
+
+        }
     }
 
     public void onClickEditTimeIntervalSave(View v) {
@@ -392,27 +401,32 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickDeleteTimeInterval(View v){
-        popupMessage.dismiss();
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        World.SELECTED_DAY.deleteTimeInterval(World.selected_time_interval);
-                        ((BaseAdapter) World.mainActivity.mainListView.getAdapter()).notifyDataSetChanged();
-                        break;
+        if (World.SELECTED_DAY.getNumberIntervals() > 1) {
+            popupMessage.dismiss();
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            World.SELECTED_DAY.deleteTimeInterval(World.selected_time_interval);
+                            ((BaseAdapter) World.mainActivity.mainListView.getAdapter()).notifyDataSetChanged();
+                            break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-                        break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
                 }
-            }
-        };
+            };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure want to delete this interval?").setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show();
-        onClickGeneral();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure want to delete this interval?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+            onClickGeneral();
+        }
+        else{
+            Toast.makeText(this, "You can't delete the last time interval in day",Toast.LENGTH_LONG).show();
+        }
     }
 
     public void onClickPlane(View view) {
@@ -453,7 +467,8 @@ public class MainActivity extends ActionBarActivity {
         if (popupMessage.isShowing()){
             popupMessage.dismiss();
         }
-        popupMessage.showAsDropDown(rowView, rowView.getWidth()/2, -15);
+        int y = layoutOfPopup.getChildAt(0).getHeight() + rowView.getHeight();
+        popupMessage.showAsDropDown(rowView, rowView.getWidth()/2, -y);
         popupMessage.setOutsideTouchable(false);
     }
 }
