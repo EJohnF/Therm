@@ -108,4 +108,5 @@ public class MainMenuOneTimesSet extends BaseAdapter {
     public void outFromEditMode(){
         isEditMode = false;
     }
+
 }

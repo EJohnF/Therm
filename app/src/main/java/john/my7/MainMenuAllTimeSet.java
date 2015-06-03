@@ -121,4 +121,10 @@ public class MainMenuAllTimeSet extends BaseAdapter {
         this.width = width;
         this.height = height;
     }
+    public void changeDays(){
+        lists = new MainMenuOneTimesSet[7];
+        for (int i = 0; i<7;i++){
+            lists[i] = new MainMenuOneTimesSet(context, timeTable.getDay(i));
+        }
+    }
 }

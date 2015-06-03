@@ -102,7 +102,7 @@ public class TimeTable  implements Serializable {
             if (i < intervals.size() - 1) {
                 intervals.get(i + 1).setStart(intervals.get(i).getEnd());
             }
-            correctIntervals();
+            correctIntervals(false);
         }
 
         public void deleteTimeInterval(TimeInterval interval){
@@ -111,9 +111,9 @@ public class TimeTable  implements Serializable {
             if (intervals.size() == 1)
                 return;
             intervals.remove(interval);
-            correctIntervals();
+            correctIntervals(true);
         }
-        public void correctIntervals(){
+        public void correctIntervals(boolean isDeleting){
             if (intervals.size() == 0)
                 return;
             for (int i = 0; i < intervals.size();i++) {
@@ -131,7 +131,11 @@ public class TimeTable  implements Serializable {
             }
             intervals.get(0).setStart(new Time(0, 0));
             if (intervals.get(intervals.size()-1).getEnd().compareTo(new Time(23, 59)) < 0){
-                intervals.add(new TimeInterval(intervals.get(intervals.size()-1).getEnd().getHour(),intervals.get(intervals.size()-1).getEnd().getMinute(), 23, 59));
+                if (isDeleting == false)
+                    intervals.add(new TimeInterval(intervals.get(intervals.size()-1).getEnd().getHour(),intervals.get(intervals.size()-1).getEnd().getMinute(), 23, 59));
+                else
+                    intervals.get(intervals.size()-1).setEnd(new Time(23,59));
+
             }
         }
 
@@ -198,12 +202,7 @@ public class TimeTable  implements Serializable {
             days[i].addInterval(new TimeInterval(0, 0, 23, 59));
             days[i].firstIsNight = true;
         }
-        days[0].addInterval(new TimeInterval(2, 0, 4, 0));
 
-        days[1].addInterval(new TimeInterval(0, 0, 6, 0));
-
-        days[1].addInterval(new TimeInterval(12, 15, 13, 15));
-        days[6].addInterval(new TimeInterval(4, 0, 6, 15));
         try {
             FileInputStream fis = context.openFileInput(fileName);
             ObjectInputStream is = new ObjectInputStream(fis);

@@ -7,9 +7,18 @@
     <ImageButton
         android:layout_width="@android:dimen/app_icon_size"
         android:layout_height="@android:dimen/app_icon_size"
+        android:id="@+id/imageButton"
+        android:background="@drawable/ok_black"
+        android:onClick="onClickInPopupOk" />
+
+    <ImageButton
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
         android:id="@+id/imageButtonEdit"
         android:background="@drawable/edit"
-        android:onClick="onClickEditTimeInterval" />
+        android:onClick="onClickEditTimeInterval"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp" />
 
     <ImageButton
         android:layout_width="@android:dimen/app_icon_size"

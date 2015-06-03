@@ -5,12 +5,10 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -77,6 +75,7 @@ public class MainActivity extends ActionBarActivity {
         wasPaused = true;
         createAnimation();
         World.mainActivity = this;
+
 
         World.startTime();
     }
@@ -245,6 +244,7 @@ public class MainActivity extends ActionBarActivity {
         ((MainMenuAllTimeSet) mainListView.getAdapter()).enterToEditMode();
         ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
         schedule.saveData(this, "tempForUndo");
+        mainListView.setFocusable(true);
     }
 
     public void onClickOk(View v) {
@@ -255,24 +255,21 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        ((MainMenuAllTimeSet) mainListView.getAdapter()).outFromEditMode();
-                        ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
-                        onClickGeneral();
-                        blueLayout.setVisibility(View.VISIBLE);
-                        editLayout.setVisibility(View.INVISIBLE);
-                        World.IS_EDIT_MODE = false;
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
                         schedule.changeFromFile(context, "tempForUndo");
-                        ((MainMenuAllTimeSet) mainListView.getAdapter()).outFromEditMode();
-                        ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
-                        onClickGeneral();
-                        blueLayout.setVisibility(View.VISIBLE);
-                        editLayout.setVisibility(View.INVISIBLE);
-                        World.IS_EDIT_MODE = false;
+                        ((MainMenuAllTimeSet) mainListView.getAdapter()).changeDays();
                         break;
                 }
+
+                ((MainMenuAllTimeSet) mainListView.getAdapter()).outFromEditMode();
+                ((BaseAdapter) mainListView.getAdapter()).notifyDataSetChanged();
+                onClickGeneral();
+                blueLayout.setVisibility(View.VISIBLE);
+                editLayout.setVisibility(View.INVISIBLE);
+                World.IS_EDIT_MODE = false;
+                  mainListView.setFocusable(true);
             }
         };
 
@@ -400,13 +397,13 @@ public class MainActivity extends ActionBarActivity {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
                             World.SELECTED_DAY.deleteTimeInterval(World.selected_time_interval);
-                            ((BaseAdapter) World.mainActivity.mainListView.getAdapter()).notifyDataSetChanged();
                             break;
 
                         case DialogInterface.BUTTON_NEGATIVE:
                             //No button clicked
                             break;
                     }
+                    ((BaseAdapter) World.mainActivity.mainListView.getAdapter()).notifyDataSetChanged();
                 }
             };
 
@@ -455,8 +452,11 @@ public class MainActivity extends ActionBarActivity {
         if (popupMessage.isShowing()){
             popupMessage.dismiss();
         }
-        int y = layoutOfPopup.getChildAt(0).getHeight() + rowView.getHeight();
+        popupMessage.setFocusable(true);
+        int y = layoutOfPopup.getChildAt(0).getHeight() + rowView.getHeight()-15;
         popupMessage.showAsDropDown(rowView, rowView.getWidth()/2, -y);
-        popupMessage.setOutsideTouchable(false);
+    }
+    public void onClickInPopupOk(View v){
+        popupMessage.dismiss();
     }
 }

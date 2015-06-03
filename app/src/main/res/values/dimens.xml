@@ -8,5 +8,5 @@
     <dimen name="in_edit_minus_plus_size">40dp</dimen>
     <dimen name="icon_in_listView">30dp</dimen>
     <dimen name="edit_time_layout_size">280dp</dimen>
-    <dimen name="row_height">54dp</dimen>
+    <dimen name="row_height">51dp</dimen>
 </resources>

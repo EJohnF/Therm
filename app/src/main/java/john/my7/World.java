@@ -39,7 +39,7 @@ public class World {
                 while (true) {
                     try {
                         //NOW 1min in app = 1 sec in real
-                        Thread.sleep(20);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -48,7 +48,7 @@ public class World {
                         CURRENT_DAY = (CURRENT_DAY + 1) % 7;
                     }
                     i++;
-                    if (i % 10 == 0) {
+                    if (i % 2 == 0) {
                         if (isVacation) {
                             if (vacationMode != null) {
                                 vacationMode.refreshTime();
